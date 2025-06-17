@@ -91,7 +91,7 @@ export default function HomeScreen() {
 
   const renderHeader = () => (
     <LinearGradient
-      colors={['#667eea', '#764ba2']}
+      colors={['#023131', '#079A91']}
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}
       style={styles.headerGradient}

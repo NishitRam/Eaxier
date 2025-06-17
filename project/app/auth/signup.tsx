@@ -122,7 +122,7 @@ export default function SignupScreen() {
         <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
           <View style={styles.header}>
             <Image
-              source={{ uri: 'https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=200' }}
+              source={require('../../assets/images/Transparent_logo.png')}
               style={styles.logo}
             />
             <Text style={styles.title}>Create Account</Text>
@@ -335,7 +335,7 @@ const styles = StyleSheet.create({
   },
   signupButton: {
     height: 56,
-    backgroundColor: '#2563EB',
+    backgroundColor: '#079A91',
     borderRadius: 12,
     justifyContent: 'center',
     alignItems: 'center',

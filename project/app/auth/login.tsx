@@ -69,7 +69,7 @@ export default function LoginScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <LinearGradient
-        colors={['#667eea', '#764ba2']}
+        colors={['#0D324D', '#95FAEA']}
         style={styles.background}
       >
         <KeyboardAvoidingView
@@ -84,7 +84,7 @@ export default function LoginScreen() {
                   style={styles.logoGradient}
                 >
                   <Image
-                    source={{ uri: 'https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=200' }}
+                    source={require('../../assets/images/Transparent_logo.png')}
                     style={styles.logo}
                   />
                 </LinearGradient>
@@ -219,7 +219,8 @@ const styles = StyleSheet.create({
   logo: {
     width: 80,
     height: 80,
-    borderRadius: 40,
+    borderRadius: 100,
+    borderWidth:1,
   },
   title: {
     fontSize: 32,

@@ -1,17 +1,13 @@
 import React, { useState } from 'react';
 import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  TextInput,
-  Image,
-  ScrollView,
-  Alert,
+  View, Text, StyleSheet, TouchableOpacity, TextInput, Image, ScrollView, Alert
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useAuth } from '@/context/AuthContext';
-import { User, CreditCard as Edit3, Camera, LogOut, Phone, Mail, MapPin } from 'lucide-react-native';
+import {
+  Edit3, Camera, LogOut, Calendar, Settings, Bookmark, Star, MapPin,
+  Phone, User, Gift
+} from 'lucide-react-native';
 import * as ImagePicker from 'expo-image-picker';
 
 export default function ProfileScreen() {
@@ -25,28 +21,22 @@ export default function ProfileScreen() {
 
   const handleEditToggle = () => {
     if (isEditing) {
-      // Save changes
       updateProfile(formData);
     }
     setIsEditing(!isEditing);
   };
 
   const handleLogout = () => {
-    Alert.alert(
-      'Logout',
-      'Are you sure you want to logout?',
-      [
-        { text: 'Cancel', style: 'cancel' },
-        { text: 'Logout', style: 'destructive', onPress: logout },
-      ]
-    );
+    Alert.alert('Logout', 'Are you sure you want to logout?', [
+      { text: 'Cancel', style: 'cancel' },
+      { text: 'Logout', style: 'destructive', onPress: logout },
+    ]);
   };
 
   const handleImagePicker = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    
     if (status !== 'granted') {
-      Alert.alert('Permission required', 'Please grant camera roll permissions to change your profile picture.');
+      Alert.alert('Permission required', 'Grant permissions to change your profile picture.');
       return;
     }
 
@@ -63,250 +53,207 @@ export default function ProfileScreen() {
   };
 
   const updateFormData = (field: string, value: string) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
+    setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
-        <View style={styles.header}>
-          <Text style={styles.headerTitle}>Profile</Text>
-          <TouchableOpacity
-            style={styles.editButton}
-            onPress={handleEditToggle}
-            activeOpacity={0.7}
-          >
-            <Edit3 size={20} color={isEditing ? '#10B981' : '#2563EB'} />
-            <Text style={[styles.editButtonText, isEditing && styles.saveButtonText]}>
-              {isEditing ? 'Save' : 'Edit'}
-            </Text>
+      <ScrollView contentContainerStyle={styles.scrollContent}>
+        {/* Top Header */}
+        <View style={styles.topSection}>
+          <View style={styles.userInfo}>
+            <Text style={styles.userName}>{formData.name || 'Verified Customer'}</Text>
+            <Text style={styles.userPhone}>{formData.phone || '+91 7854962134'}</Text>
+          </View>
+          <TouchableOpacity onPress={handleEditToggle}>
+            <Edit3 size={20} color="#2563EB" />
           </TouchableOpacity>
         </View>
 
-        <View style={styles.profileSection}>
-          <View style={styles.imageContainer}>
-            <Image
-              source={{ 
-                uri: state.user?.profileImage || 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=150'
-              }}
-              style={styles.profileImage}
-            />
-            <TouchableOpacity
-              style={styles.cameraButton}
-              onPress={handleImagePicker}
-              activeOpacity={0.7}
-            >
-              <Camera size={16} color="#FFFFFF" />
-            </TouchableOpacity>
-          </View>
-          
-          <Text style={styles.userEmail}>{state.user?.email}</Text>
+        {/* Image */}
+        <View style={styles.imageContainer}>
+          <Image
+            source={{
+              uri: state.user?.profileImage || 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=150',
+            }}
+            style={styles.profileImage}
+          />
+          <TouchableOpacity style={styles.cameraButton} onPress={handleImagePicker}>
+            <Camera size={16} color="white" />
+          </TouchableOpacity>
         </View>
 
-        <View style={styles.formSection}>
-          <View style={styles.inputGroup}>
-            <View style={styles.inputHeader}>
-              <User size={20} color="#6B7280" />
-              <Text style={styles.inputLabel}>Full Name</Text>
-            </View>
+        {/* Editable Form */}
+        {isEditing && (
+          <View style={styles.editForm}>
             <TextInput
-              style={[styles.input, !isEditing && styles.inputDisabled]}
+              style={styles.input}
+              placeholder="Full Name"
               value={formData.name}
-              onChangeText={(value) => updateFormData('name', value)}
-              editable={isEditing}
-              placeholder="Enter your full name"
-              placeholderTextColor="#9CA3AF"
+              onChangeText={(val) => updateFormData('name', val)}
             />
-          </View>
-
-          <View style={styles.inputGroup}>
-            <View style={styles.inputHeader}>
-              <Phone size={20} color="#6B7280" />
-              <Text style={styles.inputLabel}>Phone Number</Text>
-            </View>
             <TextInput
-              style={[styles.input, !isEditing && styles.inputDisabled]}
+              style={styles.input}
+              placeholder="Phone Number"
               value={formData.phone}
-              onChangeText={(value) => updateFormData('phone', value)}
-              editable={isEditing}
-              placeholder="Enter your phone number"
-              placeholderTextColor="#9CA3AF"
               keyboardType="phone-pad"
+              onChangeText={(val) => updateFormData('phone', val)}
             />
-          </View>
-
-          <View style={styles.inputGroup}>
-            <View style={styles.inputHeader}>
-              <Mail size={20} color="#6B7280" />
-              <Text style={styles.inputLabel}>Email</Text>
-            </View>
             <TextInput
-              style={[styles.input, styles.inputDisabled]}
-              value={state.user?.email || ''}
-              editable={false}
-              placeholder="Email address"
-              placeholderTextColor="#9CA3AF"
-            />
-          </View>
-
-          <View style={styles.inputGroup}>
-            <View style={styles.inputHeader}>
-              <MapPin size={20} color="#6B7280" />
-              <Text style={styles.inputLabel}>Address</Text>
-            </View>
-            <TextInput
-              style={[styles.input, !isEditing && styles.inputDisabled]}
-              value={formData.address}
-              onChangeText={(value) => updateFormData('address', value)}
-              editable={isEditing}
-              placeholder="Enter your address"
-              placeholderTextColor="#9CA3AF"
+              style={[styles.input, { height: 80 }]}
+              placeholder="Address"
               multiline
               numberOfLines={3}
+              value={formData.address}
+              onChangeText={(val) => updateFormData('address', val)}
             />
           </View>
-        </View>
+        )}
 
-        <View style={styles.actionSection}>
-          <TouchableOpacity
-            style={styles.logoutButton}
-            onPress={handleLogout}
-            activeOpacity={0.7}
-          >
-            <LogOut size={20} color="#EF4444" />
-            <Text style={styles.logoutButtonText}>Logout</Text>
+        {/* Top Action Boxes */}
+        <View style={styles.rowBoxContainer}>
+          <TouchableOpacity style={styles.rowBox}>
+            <Calendar size={22} color="#2563EB" />
+            <Text style={styles.rowBoxText}>My bookings</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.rowBox}>
+            <Bookmark size={22} color="#2563EB" />
+            <Text style={styles.rowBoxText}>Native devices</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.rowBox}>
+            <Settings size={22} color="#2563EB" />
+            <Text style={styles.rowBoxText}>Help & support</Text>
           </TouchableOpacity>
         </View>
+
+        {/* Other Options */}
+        <View style={styles.optionList}>
+          <OptionRow icon={Star} label="My Plans" />
+          <OptionRow icon={Gift} label="Wallet" />
+          <OptionRow icon={User} label="Plus membership" />
+          <OptionRow icon={Star} label="My Rating" />
+          <OptionRow icon={MapPin} label="Manage addresses" />
+          <OptionRow icon={Gift} label="Manage payment methods" />
+          <OptionRow icon={Settings} label="Settings" />
+          <OptionRow icon={Bookmark} label="About UC" />
+        </View>
+
+        {/* Refer & Earn */}
+        <View style={styles.referCard}>
+          <Gift size={24} color="#2563EB" />
+          <Text style={styles.referText}>Refer and Earn Rewards</Text>
+        </View>
+
+        {/* Logout */}
+        <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
+          <LogOut size={20} color="#EF4444" />
+          <Text style={styles.logoutText}>Logout</Text>
+        </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
   );
 }
 
+const OptionRow = ({ icon: Icon, label }: { icon: any; label: string }) => (
+  <TouchableOpacity style={styles.optionRow}>
+    <Icon size={20} color="#2563EB" />
+    <Text style={styles.optionText}>{label}</Text>
+  </TouchableOpacity>
+);
+
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#F9FAFB',
-  },
-  scrollContent: {
-    paddingBottom: 40,
-  },
-  header: {
+  container: { flex: 1, backgroundColor: '#F9FAFB' },
+  scrollContent: { paddingBottom: 40 },
+  topSection: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 20,
-    paddingVertical: 16,
-    backgroundColor: '#FFFFFF',
-    borderBottomWidth: 1,
-    borderBottomColor: '#E5E7EB',
+    padding: 20,
+    backgroundColor: 'white',
   },
-  headerTitle: {
-    fontSize: 24,
-    fontFamily: 'Inter-Bold',
-    color: '#1F2937',
-  },
-  editButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-  },
-  editButtonText: {
-    fontSize: 16,
-    fontFamily: 'Inter-SemiBold',
-    color: '#2563EB',
-    marginLeft: 4,
-  },
-  saveButtonText: {
-    color: '#10B981',
-  },
-  profileSection: {
-    alignItems: 'center',
-    paddingVertical: 32,
-    backgroundColor: '#FFFFFF',
-    marginBottom: 16,
-  },
+  userInfo: {},
+  userName: { fontSize: 20, fontWeight: 'bold', color: '#111827' },
+  userPhone: { fontSize: 14, color: '#6B7280', marginTop: 2 },
   imageContainer: {
+    alignItems: 'center',
+    marginVertical: 20,
     position: 'relative',
-    marginBottom: 16,
   },
-  profileImage: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    backgroundColor: '#F3F4F6',
-  },
+  profileImage: { width: 100, height: 100, borderRadius: 50, backgroundColor: '#E5E7EB' },
   cameraButton: {
     position: 'absolute',
     bottom: 0,
-    right: 0,
+    right: '40%',
     backgroundColor: '#2563EB',
     borderRadius: 16,
     width: 32,
     height: 32,
     justifyContent: 'center',
     alignItems: 'center',
-    borderWidth: 3,
-    borderColor: '#FFFFFF',
+    borderWidth: 2,
+    borderColor: 'white',
   },
-  userEmail: {
-    fontSize: 16,
-    fontFamily: 'Inter-Regular',
-    color: '#6B7280',
-  },
-  formSection: {
-    backgroundColor: '#FFFFFF',
-    paddingHorizontal: 20,
-    paddingVertical: 20,
-    marginBottom: 16,
-  },
-  inputGroup: {
-    marginBottom: 20,
-  },
-  inputHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 8,
-  },
-  inputLabel: {
-    fontSize: 16,
-    fontFamily: 'Inter-SemiBold',
-    color: '#1F2937',
-    marginLeft: 8,
-  },
+  editForm: { paddingHorizontal: 20 },
   input: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 10,
     borderWidth: 1,
     borderColor: '#E5E7EB',
-    borderRadius: 12,
-    paddingHorizontal: 16,
-    paddingVertical: 12,
+    padding: 12,
     fontSize: 16,
-    fontFamily: 'Inter-Regular',
-    color: '#1F2937',
-    backgroundColor: '#F9FAFB',
-    minHeight: 48,
+    marginBottom: 12,
   },
-  inputDisabled: {
-    backgroundColor: '#F3F4F6',
-    color: '#9CA3AF',
+  rowBoxContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    paddingHorizontal: 10,
+    marginBottom: 16,
   },
-  actionSection: {
+  rowBox: {
+    backgroundColor: '#FFFFFF',
+    paddingVertical: 16,
+    paddingHorizontal: 12,
+    borderRadius: 12,
+    alignItems: 'center',
+    width: '30%',
+    elevation: 2,
+    shadowColor: '#00000020',
+  },
+  rowBoxText: { fontSize: 12, color: '#1F2937', marginTop: 6, textAlign: 'center' },
+  optionList: {
+    backgroundColor: '#FFFFFF',
+    marginVertical: 8,
     paddingHorizontal: 20,
+    paddingVertical: 10,
   },
-  logoutButton: {
+  optionRow: {
     flexDirection: 'row',
     alignItems: 'center',
+    paddingVertical: 14,
+    borderBottomWidth: 1,
+    borderBottomColor: '#F3F4F6',
+  },
+  optionText: { marginLeft: 12, fontSize: 16, color: '#374151' },
+  referCard: {
+    margin: 20,
+    backgroundColor: '#E0F2FE',
+    borderRadius: 12,
+    padding: 16,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+  },
+  referText: { fontSize: 16, color: '#2563EB', fontWeight: '600' },
+  logoutButton: {
+    flexDirection: 'row',
     justifyContent: 'center',
     backgroundColor: '#FFFFFF',
-    borderRadius: 12,
+    marginHorizontal: 20,
     paddingVertical: 16,
+    borderRadius: 10,
+    marginTop: 10,
     borderWidth: 1,
     borderColor: '#FEE2E2',
   },
-  logoutButtonText: {
-    fontSize: 16,
-    fontFamily: 'Inter-SemiBold',
-    color: '#EF4444',
-    marginLeft: 8,
-  },
+  logoutText: { fontSize: 16, marginLeft: 10, color: '#EF4444', fontWeight: '600' },
 });

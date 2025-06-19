@@ -1,10 +1,10 @@
 import { Tabs } from 'expo-router';
-import { Chrome as Home, User, ShoppingCart, Heart } from 'lucide-react-native';
+import { User, ShoppingCart, Heart, Telescope  } from 'lucide-react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { AuthGuard } from '@/components/AuthGuard';
 import { useApp } from '@/context/AppContext';
 import { View, Text, StyleSheet } from 'react-native';
-
+import AntDesign from '@expo/vector-icons/AntDesign';
 function TabBarBadge({ count }: { count: number }) {
   if (count === 0) return null;
   
@@ -27,47 +27,60 @@ export default function TabLayout() {
   return (
     <AuthGuard>
       <Tabs
-        screenOptions={{
-          headerShown: false,
-          tabBarActiveTintColor: '#667eea',
-          tabBarInactiveTintColor: '#9CA3AF',
-          tabBarStyle: {
-            backgroundColor: '#FFFFFF',
-            borderTopWidth: 0,
-            height: 88,
-            paddingBottom: 20,
-            paddingTop: 8,
-            shadowColor: '#000000',
-            shadowOffset: { width: 0, height: -4 },
-            shadowOpacity: 0.1,
-            shadowRadius: 12,
-            elevation: 8,
-          },
-          tabBarLabelStyle: {
-            fontSize: 12,
-            fontFamily: 'Inter-SemiBold',
-            marginTop: 4,
-          },
-        }}
-      >
+  screenOptions={{
+    headerShown: false,
+    tabBarActiveTintColor: '#667eea',
+    tabBarInactiveTintColor: '#9CA3AF',
+    tabBarStyle: {
+      position: 'absolute',
+      left: 20,
+      right: 20,
+      height: 50,
+      backgroundColor: '#000',
+      borderRadius: 40,
+      borderTopWidth: 0,
+      elevation: 8,
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 6 },
+      shadowOpacity: 0.15,
+      shadowRadius: 20,
+      alignItems: 'center',
+      justifyContent: 'center',
+      paddingBottom: 0,
+      paddingTop:0,
+    },
+    tabBarShowLabel: false,
+  }}
+>
         <Tabs.Screen
           name="index"
           options={{
-            title: 'Home',
-            tabBarIcon: ({ size, color }) => <Home size={size} color={color} />,
+            
+            tabBarIcon:({size,focused}) =>(<AntDesign
+        name="home"
+        size={size}
+        color={focused ? '#667eea' : '#9CA3AF'}
+      /> ),
+          }} 
+        />
+        <Tabs.Screen
+          name="explore"
+          options={{
+            
+            tabBarIcon: ({ size, color }) => <Telescope size={size} color={color} />,
           }}
         />
         <Tabs.Screen
           name="wishlist"
           options={{
-            title: 'Wishlist',
+            
             tabBarIcon: ({ size, color }) => <Heart size={size} color={color} />,
           }}
         />
         <Tabs.Screen
           name="cart"
           options={{
-            title: 'Cart',
+            
             tabBarIcon: ({ size, color }) => (
               <View>
                 <ShoppingCart size={size} color={color} />
@@ -79,10 +92,11 @@ export default function TabLayout() {
         <Tabs.Screen
           name="profile"
           options={{
-            title: 'Profile',
+           
             tabBarIcon: ({ size, color }) => <User size={size} color={color} />,
           }}
         />
+        
       </Tabs>
     </AuthGuard>
   );

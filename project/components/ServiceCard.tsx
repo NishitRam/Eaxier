@@ -38,7 +38,7 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({ service, featured = fa
     return (
       <TouchableOpacity style={styles.featuredContainer} onPress={handlePress} activeOpacity={0.9}>
         <LinearGradient
-          colors={['#667eea', '#764ba2']}
+          colors={['#2563eb', '#4f46e5']}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
           style={styles.featuredGradient}
@@ -161,7 +161,7 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({ service, featured = fa
               activeOpacity={0.8}
             >
               <LinearGradient
-                colors={['#667eea', '#764ba2']}
+                colors={['#2563eb', '#4f46e5']}
                 style={styles.addButtonGradient}
               >
                 <Plus size={16} color="#FFFFFF" />

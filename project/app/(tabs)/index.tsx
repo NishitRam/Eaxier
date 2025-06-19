@@ -58,7 +58,7 @@ export default function HomeScreen() {
   };
 
   const gridItems = [
-    { label: "Women's Salon & Spa", icon: 'https://www.svgrepo.com/show/113410/massage-spa-body-treatment.svg' },
+    { label: "Women's Salon & Spa", icon: 'https://i.pinimg.com/736x/10/a1/bc/10a1bc841d048bcdec3a83ec0351f1c3.jpg' },
     { label: "Men's Salon & Massage", icon: 'https://thumbs.dreamstime.com/z/massage-green-icon-logo-vector-design-illustration-massage-green-icon-logo-vector-119104628.jpg' },
     { label: 'AC & Appliance Repair', icon: 'https://cdn.iconscout.com/icon/premium/png-256-thumb/air-purifier-6550892-5799564.png' },
     { label: 'Cleaning', icon: 'https://tse2.mm.bing.net/th?id=OIP.hywVEtLakf5KZUavG-BSUgHaFL&pid=Api&P=0&h=180' },
@@ -69,7 +69,7 @@ export default function HomeScreen() {
   return (
     <SafeAreaView style={styles.container}>
       {/* Header */}
-      <LinearGradient colors={['#023131', '#079A91']} style={styles.headerGradient}>
+      <LinearGradient colors={['#0f2027', '#203a43', '#2c5364']} style={styles.headerGradient}>
         <View style={styles.headerTop}>
           <View>
             <Text style={styles.heyText}>Hey, {authState.user?.name || 'User'}</Text>
@@ -112,17 +112,17 @@ export default function HomeScreen() {
 
         {/* Stats */}
         <View style={styles.statsSection}>
-          <LinearGradient colors={['#f093fb', '#f5576c']} style={styles.statCard}>
+          <LinearGradient colors={['#4158D0', '#C850C0']} style={styles.statCard}>
             <TrendingUp size={24} color="#fff" />
             <Text style={styles.statNumber}>500+</Text>
             <Text style={styles.statLabel}>Services</Text>
           </LinearGradient>
-          <LinearGradient colors={['#4facfe', '#00f2fe']} style={styles.statCard}>
+          <LinearGradient colors={['#0093E9', '#80D0C7']} style={styles.statCard}>
             <Clock size={24} color="#fff" />
             <Text style={styles.statNumber}>24/7</Text>
             <Text style={styles.statLabel}>Available</Text>
           </LinearGradient>
-          <LinearGradient colors={['#43e97b', '#38f9d7']} style={styles.statCard}>
+          <LinearGradient colors={['#43e97b', '#f9ea8f']} style={styles.statCard}>
             <Star size={24} color="#fff" />
             <Text style={styles.statNumber}>4.9</Text>
             <Text style={styles.statLabel}>Rating</Text>

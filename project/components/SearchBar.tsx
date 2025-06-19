@@ -16,19 +16,19 @@ export const SearchBar: React.FC<SearchBarProps> = ({ value, onChangeText, onFil
         <Search size={20} color="#9CA3AF" style={styles.searchIcon} />
         <TextInput
           style={styles.input}
-          placeholder="Search for services..."
+          placeholder="Find here"
           placeholderTextColor="#9CA3AF"
           value={value}
           onChangeText={onChangeText}
         />
         <TouchableOpacity style={styles.micButton} activeOpacity={0.7}>
-          <Mic size={18} color="#667eea" />
+          <Mic size={18} color="#333333" />
         </TouchableOpacity>
       </View>
       
       <TouchableOpacity style={styles.filterButtonContainer} onPress={onFilterPress} activeOpacity={0.8}>
         <LinearGradient
-          colors={['#667eea', '#764ba2']}
+          colors={['#0f2027', '#203a43', '#2c5364']}
           style={styles.filterButton}
         >
           <Filter size={20} color="#FFFFFF" />

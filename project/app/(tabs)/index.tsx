@@ -2,13 +2,12 @@ import React, { useState, useMemo } from 'react';
 import {
   View,
   Text,
-  FlatList,
-  StyleSheet,
-  RefreshControl,
-  ActivityIndicator,
-  TouchableOpacity,
-  Dimensions,
   ScrollView,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  RefreshControl,
+  Dimensions,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -17,8 +16,6 @@ import { useAuth } from '@/context/AuthContext';
 import { useNotifications } from '@/context/NotificationContext';
 import { ServiceCard } from '@/components/ServiceCard';
 import { SearchBar } from '@/components/SearchBar';
-import { CategoryFilter } from '@/components/CategoryFilter';
-import { Service } from '@/types';
 import { Bell, BellOff, Sparkles, TrendingUp, Clock, Star } from 'lucide-react-native';
 
 const { width } = Dimensions.get('window');
@@ -28,329 +25,197 @@ export default function HomeScreen() {
   const { state: authState } = useAuth();
   const { state: notificationState, requestPermission, toggleNotifications } = useNotifications();
   const [refreshing, setRefreshing] = useState(false);
-  const [showFilters, setShowFilters] = useState(false);
 
-  const categories = useMemo(() => {
-    const allCategories = ['All', ...new Set(state.services.map(service => service.category))];
-    return allCategories;
-  }, [state.services]);
-
-  const filteredServices = useMemo(() => {
+  const services = useMemo(() => {
     let filtered = state.services;
-
-    if (state.selectedCategory !== 'All') {
-      filtered = filtered.filter(service => service.category === state.selectedCategory);
-    }
-
     if (state.searchQuery.trim()) {
       const query = state.searchQuery.toLowerCase();
-      filtered = filtered.filter(service =>
-        service.title.toLowerCase().includes(query) ||
-        service.category.toLowerCase().includes(query) ||
-        service.provider.toLowerCase().includes(query) ||
-        service.tags.some(tag => tag.toLowerCase().includes(query))
+      filtered = filtered.filter(
+        (s) =>
+          s.title.toLowerCase().includes(query) ||
+          s.category.toLowerCase().includes(query) ||
+          s.provider.toLowerCase().includes(query) ||
+          s.tags.some((tag) => tag.toLowerCase().includes(query))
       );
     }
-
     return filtered;
-  }, [state.services, state.selectedCategory, state.searchQuery]);
+  }, [state.services, state.searchQuery]);
 
-  const featuredServices = useMemo(() => {
-    return state.services.filter(service => service.rating >= 4.8).slice(0, 3);
-  }, [state.services]);
+  const featuredServices = useMemo(
+    () => state.services.filter((s) => s.rating >= 4.8).slice(0, 3),
+    [state.services]
+  );
 
   const onRefresh = async () => {
     setRefreshing(true);
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    await new Promise((res) => setTimeout(res, 1000));
     setRefreshing(false);
   };
 
-  const handleSearchChange = (text: string) => {
-    dispatch({ type: 'SET_SEARCH_QUERY', payload: text });
-  };
-
-  const handleCategorySelect = (category: string) => {
-    dispatch({ type: 'SET_SELECTED_CATEGORY', payload: category });
-  };
-
-  const handleFilterPress = () => {
-    setShowFilters(!showFilters);
-  };
-
   const handleNotificationPress = async () => {
-    if (!notificationState.hasPermission) {
-      await requestPermission();
-    } else {
-      toggleNotifications();
-    }
+    if (!notificationState.hasPermission) await requestPermission();
+    else toggleNotifications();
   };
 
-  const renderService = ({ item }: { item: Service }) => (
-    <ServiceCard service={item} />
-  );
+  const gridItems = [
+    { label: "Women's Salon & Spa", icon: 'https://www.svgrepo.com/show/113410/massage-spa-body-treatment.svg' },
+    { label: "Men's Salon & Massage", icon: 'https://thumbs.dreamstime.com/z/massage-green-icon-logo-vector-design-illustration-massage-green-icon-logo-vector-119104628.jpg' },
+    { label: 'AC & Appliance Repair', icon: 'https://cdn.iconscout.com/icon/premium/png-256-thumb/air-purifier-6550892-5799564.png' },
+    { label: 'Cleaning', icon: 'https://tse2.mm.bing.net/th?id=OIP.hywVEtLakf5KZUavG-BSUgHaFL&pid=Api&P=0&h=180' },
+    { label: 'Electrician, Plumber & Carpenter', icon: 'https://tse4.mm.bing.net/th?id=OIP.pX8j1SJg__wT8BAPV7e0kAHaHa&pid=Api&P=0&h=180' },
+    { label: 'Water Purifier', icon: 'https://tse4.mm.bing.net/th?id=OIP.ApoIHzKvE_gwuz8SKMZSKQAAAA&pid=Api&P=0&h=180' },
+  ];
 
-  const renderHeader = () => (
-    <LinearGradient
-      colors={['#023131', '#079A91']}
-      start={{ x: 0, y: 0 }}
-      end={{ x: 1, y: 1 }}
-      style={styles.headerGradient}
-    >
-      <View style={styles.header}>
-        <View style={styles.headerContent}>
+  return (
+    <SafeAreaView style={styles.container}>
+      {/* Header */}
+      <LinearGradient colors={['#023131', '#079A91']} style={styles.headerGradient}>
+        <View style={styles.headerTop}>
           <View>
-            <Text style={styles.greeting}>Good day,</Text>
-            <Text style={styles.userName}>{authState.user?.name || 'User'}</Text>
-            <Text style={styles.subtitle}>What service do you need today?</Text>
+            <Text style={styles.heyText}>Hey, {authState.user?.name || 'User'}</Text>
+            <Text style={styles.addressText}>Chandaka Industrial Estate - Infocity</Text>
           </View>
-          <TouchableOpacity 
-            style={styles.notificationButton} 
-            onPress={handleNotificationPress}
-            activeOpacity={0.8}
-          >
+          <TouchableOpacity style={styles.notificationButton} onPress={handleNotificationPress}>
             {notificationState.isEnabled ? (
-              <Bell size={24} color="#FFFFFF" />
+              <Bell size={24} color="#fff" />
             ) : (
-              <BellOff size={24} color="#FFFFFF" />
+              <BellOff size={24} color="#fff" />
             )}
             {notificationState.isEnabled && <View style={styles.notificationDot} />}
           </TouchableOpacity>
         </View>
-      </View>
-    </LinearGradient>
-  );
-
-  const renderFeaturedSection = () => (
-    <View style={styles.featuredSection}>
-      <View style={styles.sectionHeader}>
-        <View style={styles.sectionTitleContainer}>
-          <Sparkles size={20} color="#667eea" />
-          <Text style={styles.sectionTitle}>Featured Services</Text>
-        </View>
-        <TouchableOpacity style={styles.viewAllButton}>
-          <Text style={styles.viewAllText}>View All</Text>
-        </TouchableOpacity>
-      </View>
-      
-      <ScrollView 
-        horizontal 
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.featuredScrollContent}
-      >
-        {featuredServices.map((service) => (
-          <View key={service.id} style={styles.featuredCard}>
-            <ServiceCard service={service} featured />
-          </View>
-        ))}
-      </ScrollView>
-    </View>
-  );
-
-  const renderStatsSection = () => (
-    <View style={styles.statsSection}>
-      <LinearGradient
-        colors={['#f093fb', '#f5576c']}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 0 }}
-        style={styles.statCard}
-      >
-        <TrendingUp size={24} color="#FFFFFF" />
-        <Text style={styles.statNumber}>500+</Text>
-        <Text style={styles.statLabel}>Services</Text>
       </LinearGradient>
-      
-      <LinearGradient
-        colors={['#4facfe', '#00f2fe']}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 0 }}
-        style={styles.statCard}
-      >
-        <Clock size={24} color="#FFFFFF" />
-        <Text style={styles.statNumber}>24/7</Text>
-        <Text style={styles.statLabel}>Available</Text>
-      </LinearGradient>
-      
-      <LinearGradient
-        colors={['#43e97b', '#38f9d7']}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 0 }}
-        style={styles.statCard}
-      >
-        <Star size={24} color="#FFFFFF" />
-        <Text style={styles.statNumber}>4.9</Text>
-        <Text style={styles.statLabel}>Rating</Text>
-      </LinearGradient>
-    </View>
-  );
 
-  const renderEmptyState = () => (
-    <View style={styles.emptyState}>
-      <Text style={styles.emptyTitle}>No services found</Text>
-      <Text style={styles.emptySubtitle}>
-        Try adjusting your search or filters
-      </Text>
-    </View>
-  );
-
-  if (state.isLoading) {
-    return (
-      <SafeAreaView style={styles.container}>
-        <LinearGradient
-          colors={['#667eea', '#764ba2']}
-          style={styles.loadingContainer}
-        >
-          <ActivityIndicator size="large" color="#FFFFFF" />
-          <Text style={styles.loadingText}>Loading services...</Text>
-        </LinearGradient>
-      </SafeAreaView>
-    );
-  }
-
-  return (
-    <SafeAreaView style={styles.container}>
-      {renderHeader()}
-      
-      <SearchBar
-        value={state.searchQuery}
-        onChangeText={handleSearchChange}
-        onFilterPress={handleFilterPress}
-      />
-      
-      {(showFilters || state.selectedCategory !== 'All') && (
-        <CategoryFilter
-          categories={categories}
-          selectedCategory={state.selectedCategory}
-          onSelectCategory={handleCategorySelect}
-        />
-      )}
-
-      <FlatList
-        data={filteredServices}
-        renderItem={renderService}
-        keyExtractor={(item) => item.id.toString()}
-        contentContainerStyle={styles.listContent}
+      {/* Scrollable Content */}
+      <ScrollView
         showsVerticalScrollIndicator={false}
-        refreshControl={
-          <RefreshControl
-            refreshing={refreshing}
-            onRefresh={onRefresh}
-            colors={['#667eea']}
-            tintColor="#667eea"
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+      >
+        {/* Search Bar below header */}
+        <View style={{ paddingHorizontal: 20, marginTop: 16 }}>
+          <SearchBar
+            value={state.searchQuery}
+            onChangeText={(text) => dispatch({ type: 'SET_SEARCH_QUERY', payload: text })}
+            onFilterPress={() => {}}
           />
-        }
-        ListHeaderComponent={
-          <View>
-            {renderStatsSection()}
-            {renderFeaturedSection()}
-            <View style={styles.allServicesHeader}>
-              <Text style={styles.allServicesTitle}>All Services</Text>
+        </View>
+
+        {/* Grid Icons */}
+        <View style={styles.gridContainer}>
+          {gridItems.map((item, index) => (
+            <View key={index} style={styles.gridItem}>
+              <Image source={{ uri: item.icon }} style={styles.gridIcon} />
+              <Text style={styles.gridLabel}>{item.label}</Text>
             </View>
+          ))}
+        </View>
+
+        {/* Stats */}
+        <View style={styles.statsSection}>
+          <LinearGradient colors={['#f093fb', '#f5576c']} style={styles.statCard}>
+            <TrendingUp size={24} color="#fff" />
+            <Text style={styles.statNumber}>500+</Text>
+            <Text style={styles.statLabel}>Services</Text>
+          </LinearGradient>
+          <LinearGradient colors={['#4facfe', '#00f2fe']} style={styles.statCard}>
+            <Clock size={24} color="#fff" />
+            <Text style={styles.statNumber}>24/7</Text>
+            <Text style={styles.statLabel}>Available</Text>
+          </LinearGradient>
+          <LinearGradient colors={['#43e97b', '#38f9d7']} style={styles.statCard}>
+            <Star size={24} color="#fff" />
+            <Text style={styles.statNumber}>4.9</Text>
+            <Text style={styles.statLabel}>Rating</Text>
+          </LinearGradient>
+        </View>
+
+        {/* Featured */}
+        <View style={styles.featuredSection}>
+          <View style={styles.sectionHeader}>
+            <View style={styles.sectionTitleContainer}>
+              <Sparkles size={20} color="#667eea" />
+              <Text style={styles.sectionTitle}>Featured Services</Text>
+            </View>
+            <TouchableOpacity>
+              <Text style={styles.viewAllText}>View All</Text>
+            </TouchableOpacity>
           </View>
-        }
-        ListEmptyComponent={renderEmptyState}
-      />
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: 20 }}>
+            {featuredServices.map((s) => (
+              <View key={s.id} style={{ width: width * 0.7, marginRight: 16 }}>
+                <ServiceCard service={s} featured />
+              </View>
+            ))}
+          </ScrollView>
+        </View>
+
+        {/* All Services */}
+        <View style={{ paddingHorizontal: 20, paddingBottom: 80 }}>
+          <Text style={styles.sectionTitle}>All Services</Text>
+          {services.map((s) => (
+            <ServiceCard key={s.id} service={s} />
+          ))}
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#F8FAFC',
-  },
+  container: { flex: 1, backgroundColor: '#F8FAFC' },
   headerGradient: {
     borderBottomLeftRadius: 24,
     borderBottomRightRadius: 24,
+    paddingBottom: 16,
   },
-  header: {
-    paddingHorizontal: 20,
-    paddingVertical: 20,
-    paddingBottom: 32,
-  },
-  headerContent: {
+  headerTop: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'flex-start',
-  },
-  greeting: {
-    fontSize: 16,
-    fontFamily: 'Inter-Regular',
-    color: 'rgba(255, 255, 255, 0.8)',
-  },
-  userName: {
-    fontSize: 28,
-    fontFamily: 'Inter-Bold',
-    color: '#FFFFFF',
-    marginBottom: 4,
-  },
-  subtitle: {
-    fontSize: 14,
-    fontFamily: 'Inter-Regular',
-    color: 'rgba(255, 255, 255, 0.7)',
-  },
-  notificationButton: {
-    width: 48,
-    height: 48,
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
-    borderRadius: 24,
-    justifyContent: 'center',
     alignItems: 'center',
+    paddingHorizontal: 20,
+    paddingTop: 16,
+  },
+  heyText: { fontSize: 18, color: '#fff', fontWeight: '600' },
+  addressText: { fontSize: 14, color: '#d1d5db', marginTop: 4 },
+  notificationButton: {
+    backgroundColor: 'rgba(255,255,255,0.2)',
+    padding: 10,
+    borderRadius: 24,
     position: 'relative',
   },
   notificationDot: {
     position: 'absolute',
-    top: 8,
-    right: 8,
+    top: 6,
+    right: 6,
     width: 8,
     height: 8,
-    backgroundColor: '#FF6B6B',
+    backgroundColor: 'red',
     borderRadius: 4,
-    borderWidth: 2,
-    borderColor: '#FFFFFF',
   },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+  gridContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    padding: 20,
+    justifyContent: 'space-between',
   },
-  loadingText: {
-    fontSize: 16,
-    fontFamily: 'Inter-Medium',
-    color: '#FFFFFF',
-    marginTop: 12,
-  },
+  gridItem: { width: '30%', alignItems: 'center', marginBottom: 20 },
+  gridIcon: { width: 50, height: 50, marginBottom: 6 },
+  gridLabel: { textAlign: 'center', fontSize: 12, color: '#374151' },
   statsSection: {
     flexDirection: 'row',
     paddingHorizontal: 20,
-    paddingVertical: 20,
+    paddingBottom: 20,
     gap: 12,
   },
   statCard: {
     flex: 1,
-    padding: 16,
     borderRadius: 16,
+    padding: 16,
     alignItems: 'center',
-    shadowColor: '#000000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.1,
-    shadowRadius: 12,
-    elevation: 6,
   },
-  statNumber: {
-    fontSize: 20,
-    fontFamily: 'Inter-Bold',
-    color: '#FFFFFF',
-    marginTop: 8,
-  },
-  statLabel: {
-    fontSize: 12,
-    fontFamily: 'Inter-Medium',
-    color: 'rgba(255, 255, 255, 0.9)',
-    marginTop: 4,
-  },
-  featuredSection: {
-    paddingVertical: 20,
-  },
+  statNumber: { color: '#fff', fontWeight: 'bold', fontSize: 18, marginTop: 8 },
+  statLabel: { color: '#fff', fontSize: 12, marginTop: 4 },
+  featuredSection: { marginTop: 20, marginBottom: 10 },
   sectionHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -358,59 +223,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     marginBottom: 16,
   },
-  sectionTitleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
+  sectionTitleContainer: { flexDirection: 'row', alignItems: 'center' },
   sectionTitle: {
-    fontSize: 20,
-    fontFamily: 'Inter-Bold',
+    fontSize: 18,
+    fontWeight: 'bold',
     color: '#1F2937',
     marginLeft: 8,
+    marginBottom: 4,
   },
-  viewAllButton: {
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-  },
-  viewAllText: {
-    fontSize: 14,
-    fontFamily: 'Inter-SemiBold',
-    color: '#667eea',
-  },
-  featuredScrollContent: {
-    paddingHorizontal: 20,
-  },
-  featuredCard: {
-    marginRight: 16,
-    width: width * 0.75,
-  },
-  allServicesHeader: {
-    paddingHorizontal: 20,
-    paddingVertical: 16,
-  },
-  allServicesTitle: {
-    fontSize: 20,
-    fontFamily: 'Inter-Bold',
-    color: '#1F2937',
-  },
-  listContent: {
-    paddingHorizontal: 20,
-    paddingBottom: 100,
-  },
-  emptyState: {
-    alignItems: 'center',
-    paddingVertical: 60,
-  },
-  emptyTitle: {
-    fontSize: 20,
-    fontFamily: 'Inter-SemiBold',
-    color: '#1F2937',
-    marginBottom: 8,
-  },
-  emptySubtitle: {
-    fontSize: 16,
-    fontFamily: 'Inter-Regular',
-    color: '#6B7280',
-    textAlign: 'center',
-  },
+  viewAllText: { fontSize: 14, color: '#667eea' },
 });

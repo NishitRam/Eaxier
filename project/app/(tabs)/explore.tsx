@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Search } from 'lucide-react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 
 interface Game {
   id: string;
@@ -68,10 +69,14 @@ const ExploreGamesScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.title}>🎮 Play Games & Earn!</Text>
-        <Text style={styles.subtitle}>Score: {score} | Level: {Math.floor(score / 50) + 1}</Text>
-      </View>
+      <LinearGradient colors={['#0f2027', '#203a43', '#2c5364']} style={styles.headerGradient}>
+              <View style={styles.headerTop}>
+                <View>
+                  <Text style={styles.heyText}>Explore More</Text>
+                  <Text style={styles.subText}>Find More serivices!!</Text>
+                </View>
+              </View>
+            </LinearGradient>
 
       <View style={styles.searchContainer}>
         <Search color="#555" size={20} />
@@ -127,7 +132,20 @@ const ExploreGamesScreen = () => {
 const { width } = Dimensions.get('window');
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#f9fafb' },
-  header: { padding: 20, alignItems: 'center' },
+   headerGradient: {
+    borderBottomLeftRadius: 24,
+    borderBottomRightRadius: 24,
+    paddingBottom: 16,
+  },
+  headerTop: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    paddingTop: 16,
+  },
+  heyText: { fontSize: 18, color: '#fff', fontWeight: '600' },
+  subText: { fontSize: 14, color: '#d1d5db', marginTop: 4 },
   title: { fontSize: 22, fontWeight: '700', color: '#1f2937' },
   subtitle: { fontSize: 14, color: '#6b7280', marginTop: 4 },
   searchContainer: {

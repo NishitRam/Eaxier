@@ -9,6 +9,7 @@ import {
   Phone, User, Gift
 } from 'lucide-react-native';
 import * as ImagePicker from 'expo-image-picker';
+import { LinearGradient } from 'expo-linear-gradient';
 
 export default function ProfileScreen() {
   const { state, logout, updateProfile } = useAuth();
@@ -59,15 +60,26 @@ export default function ProfileScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
-        {/* Top Header */}
-        <View style={styles.topSection}>
-          <View style={styles.userInfo}>
-            <Text style={styles.userName}>{formData.name || 'Verified Customer'}</Text>
-            <Text style={styles.userPhone}>{formData.phone || '+91 7854962134'}</Text>
-          </View>
-          <TouchableOpacity onPress={handleEditToggle}>
-            <Edit3 size={20} color="#2563EB" />
-          </TouchableOpacity>
+        {/* Custom Gradient Header */}
+        <View style={styles.header}>
+          <LinearGradient
+            colors={['#0f2027', '#203a43', '#2c5364']}
+            style={styles.headerGradient}
+          >
+            <View style={styles.headerTop}>
+              <View>
+                <Text style={styles.heyText}>
+                  Profile
+                </Text>
+                <Text style={styles.subText}>
+                  View and edit your account details
+                </Text>
+              </View>
+              <TouchableOpacity onPress={handleEditToggle}>
+                <Edit3 size={20} color="#fff" />
+              </TouchableOpacity>
+            </View>
+          </LinearGradient>
         </View>
 
         {/* Image */}
@@ -83,6 +95,12 @@ export default function ProfileScreen() {
           </TouchableOpacity>
         </View>
 
+        {/* User Info */}
+        <View style={styles.userInfoBox}>
+          <Text style={styles.userName}>{formData.name || 'Verified Customer'}</Text>
+          <Text style={styles.userPhone}>{formData.phone || '+91 7854962134'}</Text>
+        </View>
+
         {/* Editable Form */}
         {isEditing && (
           <View style={styles.editForm}>
@@ -91,6 +109,7 @@ export default function ProfileScreen() {
               placeholder="Full Name"
               value={formData.name}
               onChangeText={(val) => updateFormData('name', val)}
+              placeholderTextColor="#9CA3AF"
             />
             <TextInput
               style={styles.input}
@@ -98,6 +117,7 @@ export default function ProfileScreen() {
               value={formData.phone}
               keyboardType="phone-pad"
               onChangeText={(val) => updateFormData('phone', val)}
+              placeholderTextColor="#9CA3AF"
             />
             <TextInput
               style={[styles.input, { height: 80 }]}
@@ -106,6 +126,7 @@ export default function ProfileScreen() {
               numberOfLines={3}
               value={formData.address}
               onChangeText={(val) => updateFormData('address', val)}
+              placeholderTextColor="#9CA3AF"
             />
           </View>
         )}
@@ -164,16 +185,23 @@ const OptionRow = ({ icon: Icon, label }: { icon: any; label: string }) => (
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#F9FAFB' },
   scrollContent: { paddingBottom: 40 },
-  topSection: {
+  header: {
+    // Empty, headerGradient handles rounded corners and color
+  },
+  headerGradient: {
+    borderBottomLeftRadius: 24,
+    borderBottomRightRadius: 24,
+    paddingBottom: 16,
+  },
+  headerTop: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 20,
-    backgroundColor: 'white',
+    paddingHorizontal: 20,
+    paddingTop: 16,
   },
-  userInfo: {},
-  userName: { fontSize: 20, fontWeight: 'bold', color: '#111827' },
-  userPhone: { fontSize: 14, color: '#6B7280', marginTop: 2 },
+  heyText: { fontSize: 18, color: '#fff', fontWeight: '600' },
+  subText: { fontSize: 14, color: '#d1d5db', marginTop: 4 },
   imageContainer: {
     alignItems: 'center',
     marginVertical: 20,
@@ -193,6 +221,12 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: 'white',
   },
+  userInfoBox: {
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  userName: { fontSize: 20, fontWeight: 'bold', color: '#111827' },
+  userPhone: { fontSize: 14, color: '#6B7280', marginTop: 2 },
   editForm: { paddingHorizontal: 20 },
   input: {
     backgroundColor: '#FFFFFF',
@@ -202,6 +236,7 @@ const styles = StyleSheet.create({
     padding: 12,
     fontSize: 16,
     marginBottom: 12,
+    color: '#1F2937',
   },
   rowBoxContainer: {
     flexDirection: 'row',

@@ -12,6 +12,7 @@ import { useRouter } from 'expo-router';
 import { useApp } from '@/context/AppContext';
 import { Service } from '@/types';
 import { Heart, Star, Plus, Trash2 } from 'lucide-react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 
 export default function WishlistScreen() {
   const { state, addToCart, removeFromWishlist } = useApp();
@@ -36,28 +37,28 @@ export default function WishlistScreen() {
       activeOpacity={0.7}
     >
       <Image source={{ uri: item.image }} style={styles.itemImage} />
-      
+
       <View style={styles.itemContent}>
         <Text style={styles.itemTitle} numberOfLines={2}>
           {item.title}
         </Text>
-        
+
         <Text style={styles.itemProvider} numberOfLines={1}>
           by {item.provider}
         </Text>
-        
+
         <View style={styles.itemDetails}>
           <View style={styles.ratingContainer}>
             <Star size={14} color="#F59E0B" fill="#F59E0B" />
             <Text style={styles.rating}>{item.rating}</Text>
           </View>
-          
+
           <Text style={styles.duration}>{item.duration}</Text>
         </View>
-        
+
         <View style={styles.itemFooter}>
           <Text style={styles.price}>${item.price}</Text>
-          
+
           <View style={styles.actionButtons}>
             <TouchableOpacity
               style={styles.removeButton}
@@ -66,7 +67,7 @@ export default function WishlistScreen() {
             >
               <Trash2 size={16} color="#EF4444" />
             </TouchableOpacity>
-            
+
             <TouchableOpacity
               style={styles.addButton}
               onPress={() => handleAddToCart(item)}
@@ -100,12 +101,20 @@ export default function WishlistScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.headerTitle}>Wishlist</Text>
-        {state.wishlist.length > 0 && (
-          <Text style={styles.itemCount}>{state.wishlist.length} items</Text>
-        )}
-      </View>
+      <LinearGradient
+        colors={['#0f2027', '#203a43', '#2c5364']}
+        style={styles.headerGradient}
+      >
+        <View style={styles.headerTop}>
+          <View>
+            <Text style={styles.heyText}>Wishlist</Text>
+            <Text style={styles.subText}>Manage Your Favourites!</Text>
+          </View>
+        </View>
+      </LinearGradient>
+      {state.wishlist.length > 0 && (
+        <Text style={styles.itemCount}>{state.wishlist.length} items</Text>
+      )}
 
       <FlatList
         data={state.wishlist}
@@ -113,7 +122,7 @@ export default function WishlistScreen() {
         keyExtractor={(item) => item.id.toString()}
         contentContainerStyle={[
           styles.listContent,
-          state.wishlist.length === 0 && styles.emptyListContent
+          state.wishlist.length === 0 && styles.emptyListContent,
         ]}
         showsVerticalScrollIndicator={false}
         ListEmptyComponent={renderEmptyState}
@@ -127,16 +136,30 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F9FAFB',
   },
-  header: {
+  // header: {
+  //   flexDirection: 'row',
+  //   justifyContent: 'space-between',
+  //   alignItems: 'center',
+  //   paddingHorizontal: 20,
+  //   paddingVertical: 16,
+  //   backgroundColor: '#FFFFFF',
+  //   borderBottomWidth: 1,
+  //   borderBottomColor: '#E5E7EB',
+  // },
+  headerGradient: {
+    borderBottomLeftRadius: 24,
+    borderBottomRightRadius: 24,
+    paddingBottom: 16,
+  },
+  headerTop: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 20,
-    paddingVertical: 16,
-    backgroundColor: '#FFFFFF',
-    borderBottomWidth: 1,
-    borderBottomColor: '#E5E7EB',
+    paddingTop: 16,
   },
+  heyText: { fontSize: 18, color: '#fff', fontWeight: '600' },
+  subText: { fontSize: 14, color: '#d1d5db', marginTop: 4 },
   headerTitle: {
     fontSize: 24,
     fontFamily: 'Inter-Bold',

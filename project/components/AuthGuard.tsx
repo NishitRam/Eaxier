@@ -29,10 +29,17 @@ export const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
     if (state.isAuthenticated && inAuthGroup) {
       // User is authenticated but on auth screen, redirect to tabs
       router.replace('/(tabs)');
-    } else if (!state.isAuthenticated && (inTabsGroup || segments.length === 0)) {
-      // User is not authenticated but trying to access protected routes
-      router.replace('/auth/login');
-    }
+      
+    // } else if (!state.isAuthenticated && (inTabsGroup || segments.length === 0)) {
+    //   // User is not authenticated but trying to access protected routes
+    //   router.replace('/auth/login');
+    // }
+    } else if (
+  !state.isAuthenticated &&
+  (!segments.length || inTabsGroup)
+) {
+  router.replace('/auth/login');
+}
   }, [state.isAuthenticated, state.isLoading, segments, isNavigationReady, router]);
 
   // Show loading while auth state is being determined

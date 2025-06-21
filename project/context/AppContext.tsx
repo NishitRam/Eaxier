@@ -105,7 +105,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           id: 1,
           title: 'AC Repair & Service',
           category: 'Appliance',
-          price: 199,
+          price: 500,
           rating: 4.8,
           image: 'https://images.pexels.com/photos/5691588/pexels-photo-5691588.jpeg?auto=compress&cs=tinysrgb&w=400',
           description: 'Professional AC repair and maintenance service. Our certified technicians will diagnose and fix any AC issues.',
@@ -117,7 +117,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           id: 2,
           title: 'House Cleaning',
           category: 'Cleaning',
-          price: 89,
+          price: 250,
           rating: 4.9,
           image: 'https://images.pexels.com/photos/4239019/pexels-photo-4239019.jpeg?auto=compress&cs=tinysrgb&w=400',
           description: 'Deep cleaning service for your home. We cover all rooms, kitchen, bathrooms, and common areas.',
@@ -129,7 +129,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           id: 3,
           title: 'Plumbing Service',
           category: 'Home Repair',
-          price: 149,
+          price: 350,
           rating: 4.7,
           image: 'https://images.pexels.com/photos/8985457/pexels-photo-8985457.jpeg?auto=compress&cs=tinysrgb&w=400',
           description: 'Expert plumbing services for leaks, clogs, and installations. 24/7 emergency service available.',
@@ -141,7 +141,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           id: 4,
           title: 'Massage Therapy',
           category: 'Beauty & Wellness',
-          price: 120,
+          price: 650,
           rating: 4.9,
           image: 'https://images.pexels.com/photos/3997743/pexels-photo-3997743.jpeg?auto=compress&cs=tinysrgb&w=400',
           description: 'Relaxing full-body massage therapy session. Choose from Swedish, deep tissue, or aromatherapy.',
@@ -153,7 +153,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           id: 5,
           title: 'Hair Cut & Styling',
           category: 'Beauty & Wellness',
-          price: 45,
+          price: 200,
           rating: 4.6,
           image: 'https://images.pexels.com/photos/3993449/pexels-photo-3993449.jpeg?auto=compress&cs=tinysrgb&w=400',
           description: 'Professional haircut and styling service at your doorstep. Includes wash, cut, and styling.',
@@ -165,7 +165,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           id: 6,
           title: 'Electrical Repair',
           category: 'Home Repair',
-          price: 179,
+          price: 380,
           rating: 4.8,
           image: 'https://images.pexels.com/photos/5974042/pexels-photo-5974042.jpeg?auto=compress&cs=tinysrgb&w=400',
           description: 'Licensed electrician for all electrical repairs and installations. Safe and reliable service.',
@@ -177,7 +177,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           id: 7,
           title: 'Pest Control',
           category: 'Home Maintenance',
-          price: 129,
+          price: 560,
           rating: 4.5,
           image: 'https://images.pexels.com/photos/4239013/pexels-photo-4239013.jpeg?auto=compress&cs=tinysrgb&w=400',
           description: 'Safe and effective pest control treatment for your home. Eco-friendly options available.',
@@ -189,7 +189,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           id: 8,
           title: 'Personal Trainer',
           category: 'Fitness',
-          price: 85,
+          price: 690,
           rating: 4.7,
           image: 'https://images.pexels.com/photos/416778/pexels-photo-416778.jpeg?auto=compress&cs=tinysrgb&w=400',
           description: 'Certified personal trainer for customized fitness sessions. Equipment provided.',
@@ -268,5 +268,5 @@ export const useApp = () => {
   if (!context) {
     throw new Error('useApp must be used within an AppProvider');
   }
-  return context;
+  return context;
 };

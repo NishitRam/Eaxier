@@ -13,6 +13,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Search } from 'lucide-react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useTheme } from '@/context/ThemeContext';
 
 interface Game {
   id: string;
@@ -54,12 +55,13 @@ const offers = [
 ];
 
 const ExploreGamesScreen = () => {
+  const { isDark } = useTheme();
   const [searchQuery, setSearchQuery] = useState('');
   const [score, setScore] = useState(70);
   const [showOffers, setShowOffers] = useState(false);
 
   const handleGameClick = (game: Game) => {
-    setScore(prev => prev + Math.floor(Math.random() * 10 + 1));
+    setScore((prev) => prev + Math.floor(Math.random() * 10 + 1));
     Linking.openURL(game.url);
   };
 
@@ -68,21 +70,22 @@ const ExploreGamesScreen = () => {
   );
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, { backgroundColor: isDark ? '#111827' : '#f9fafb' }]}>
       <LinearGradient colors={['#0f2027', '#203a43', '#2c5364']} style={styles.headerGradient}>
-              <View style={styles.headerTop}>
-                <View>
-                  <Text style={styles.heyText}>Explore More</Text>
-                  <Text style={styles.subText}>Find More serivices!!</Text>
-                </View>
-              </View>
-            </LinearGradient>
+        <View style={styles.headerTop}>
+          <View>
+            <Text style={styles.heyText}>Explore More</Text>
+            <Text style={styles.subText}>Find more services!</Text>
+          </View>
+        </View>
+      </LinearGradient>
 
-      <View style={styles.searchContainer}>
-        <Search color="#555" size={20} />
+      <View style={[styles.searchContainer, { backgroundColor: isDark ? '#374151' : '#e5e7eb' }]}>
+        <Search color={isDark ? '#d1d5db' : '#555'} size={20} />
         <TextInput
-          style={styles.searchInput}
+          style={[styles.searchInput, { color: isDark ? '#f9fafb' : '#111827' }]}
           placeholder="Search games..."
+          placeholderTextColor={isDark ? '#9CA3AF' : '#6B7280'}
           value={searchQuery}
           onChangeText={setSearchQuery}
         />
@@ -93,17 +96,34 @@ const ExploreGamesScreen = () => {
           {filteredGames.map((game) => (
             <TouchableOpacity
               key={game.id}
-              style={styles.card}
+              style={[
+                styles.card,
+                {
+                  backgroundColor: isDark ? '#1f2937' : '#ffffff',
+                  shadowColor: isDark ? '#000' : '#000',
+                },
+              ]}
               onPress={() => handleGameClick(game)}
             >
               <Image source={{ uri: game.image }} style={styles.gameImage} />
-              <Text style={styles.gameTitle}>{game.title}</Text>
+              <Text style={[styles.gameTitle, { color: isDark ? '#f3f4f6' : '#374151' }]}>
+                {game.title}
+              </Text>
             </TouchableOpacity>
           ))}
         </View>
 
-        <View style={styles.rewardsSection}>
-          <Text style={styles.rewardsTitle}>🎁 Rewards & Offers</Text>
+        <View
+          style={[
+            styles.rewardsSection,
+            {
+              backgroundColor: isDark ? '#1e293b' : '#e0f2fe',
+            },
+          ]}
+        >
+          <Text style={[styles.rewardsTitle, { color: isDark ? '#38bdf8' : '#0284c7' }]}>
+            🎁 Rewards & Offers
+          </Text>
           <TouchableOpacity
             style={styles.rewardsButton}
             onPress={() => setShowOffers(!showOffers)}
@@ -116,9 +136,31 @@ const ExploreGamesScreen = () => {
           {showOffers && (
             <View style={styles.offerList}>
               {offers.map((offer, index) => (
-                <View key={index} style={styles.offerCard}>
-                  <Text style={styles.offerTitle}>{offer.title}</Text>
-                  <Text style={styles.offerDescription}>{offer.description}</Text>
+                <View
+                  key={index}
+                  style={[
+                    styles.offerCard,
+                    {
+                      backgroundColor: isDark ? '#334155' : '#ffffff',
+                    },
+                  ]}
+                >
+                  <Text
+                    style={[
+                      styles.offerTitle,
+                      { color: isDark ? '#facc15' : '#0c4a6e' },
+                    ]}
+                  >
+                    {offer.title}
+                  </Text>
+                  <Text
+                    style={[
+                      styles.offerDescription,
+                      { color: isDark ? '#f3f4f6' : '#334155' },
+                    ]}
+                  >
+                    {offer.description}
+                  </Text>
                 </View>
               ))}
             </View>
@@ -130,9 +172,10 @@ const ExploreGamesScreen = () => {
 };
 
 const { width } = Dimensions.get('window');
+
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#f9fafb' },
-   headerGradient: {
+  container: { flex: 1 },
+  headerGradient: {
     borderBottomLeftRadius: 24,
     borderBottomRightRadius: 24,
     paddingBottom: 16,
@@ -146,11 +189,8 @@ const styles = StyleSheet.create({
   },
   heyText: { fontSize: 18, color: '#fff', fontWeight: '600' },
   subText: { fontSize: 14, color: '#d1d5db', marginTop: 4 },
-  title: { fontSize: 22, fontWeight: '700', color: '#1f2937' },
-  subtitle: { fontSize: 14, color: '#6b7280', marginTop: 4 },
   searchContainer: {
     flexDirection: 'row',
-    backgroundColor: '#e5e7eb',
     margin: 16,
     paddingHorizontal: 12,
     paddingVertical: 10,
@@ -161,7 +201,6 @@ const styles = StyleSheet.create({
     marginLeft: 8,
     flex: 1,
     fontSize: 14,
-    color: '#111827',
   },
   scrollArea: {
     paddingBottom: 100,
@@ -173,24 +212,21 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
   },
   card: {
-    backgroundColor: '#ffffff',
     width: width * 0.42,
     marginBottom: 16,
     borderRadius: 16,
     alignItems: 'center',
     padding: 16,
-    shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.08,
     shadowRadius: 6,
     elevation: 4,
   },
   gameImage: { width: 72, height: 72, marginBottom: 10 },
-  gameTitle: { fontSize: 15, fontWeight: '600', color: '#374151', textAlign: 'center' },
+  gameTitle: { fontSize: 15, fontWeight: '600', textAlign: 'center' },
   rewardsSection: {
     width: '100%',
     padding: 20,
-    backgroundColor: '#e0f2fe',
     borderRadius: 12,
     marginTop: 20,
     alignItems: 'center',
@@ -198,7 +234,6 @@ const styles = StyleSheet.create({
   rewardsTitle: {
     fontSize: 18,
     fontWeight: '700',
-    color: '#0284c7',
     marginBottom: 12,
   },
   rewardsButton: {
@@ -217,7 +252,6 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   offerCard: {
-    backgroundColor: '#ffffff',
     borderRadius: 12,
     padding: 16,
     marginVertical: 6,
@@ -230,11 +264,9 @@ const styles = StyleSheet.create({
   offerTitle: {
     fontSize: 16,
     fontWeight: '700',
-    color: '#0c4a6e',
   },
   offerDescription: {
     fontSize: 14,
-    color: '#334155',
     marginTop: 4,
   },
 });

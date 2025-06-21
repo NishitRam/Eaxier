@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import {
   View,
@@ -7,6 +8,7 @@ import {
   TouchableOpacity,
   Alert,
   Image,
+  useColorScheme,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
@@ -15,6 +17,8 @@ import { useAuth } from '@/context/AuthContext';
 import { ArrowLeft, CreditCard, MapPin, User, CircleCheck as CheckCircle } from 'lucide-react-native';
 
 export default function CheckoutScreen() {
+  const colorScheme = useColorScheme();
+  const isDark = colorScheme === 'dark';
   const router = useRouter();
   const { state, clearCart, getTotalPrice, getCartItemsCount } = useApp();
   const { state: authState } = useAuth();
@@ -22,7 +26,7 @@ export default function CheckoutScreen() {
 
   const totalPrice = getTotalPrice();
   const itemCount = getCartItemsCount();
-  const tax = totalPrice * 0.08; // 8% tax
+  const tax = totalPrice * 0.08;
   const serviceFee = 5.99;
   const finalTotal = totalPrice + tax + serviceFee;
 
@@ -32,10 +36,7 @@ export default function CheckoutScreen() {
 
   const handlePlaceOrder = async () => {
     setIsProcessing(true);
-    
-    // Simulate order processing
     await new Promise(resolve => setTimeout(resolve, 2000));
-    
     Alert.alert(
       'Order Placed Successfully!',
       `Your order for ${itemCount} service${itemCount > 1 ? 's' : ''} has been confirmed. Total amount: $${finalTotal.toFixed(2)}`,
@@ -49,62 +50,53 @@ export default function CheckoutScreen() {
         },
       ]
     );
-    
     setIsProcessing(false);
   };
 
   const renderOrderItem = (item: any) => (
-    <View key={item.service.id} style={styles.orderItem}>
+    <View key={item.service.id} style={[styles.orderItem, isDark && { borderBottomColor: '#444' }]}> 
       <Image source={{ uri: item.service.image }} style={styles.itemImage} />
-      
       <View style={styles.itemDetails}>
-        <Text style={styles.itemTitle} numberOfLines={2}>
-          {item.service.title}
-        </Text>
-        <Text style={styles.itemProvider}>by {item.service.provider}</Text>
-        <Text style={styles.itemQuantity}>Qty: {item.quantity}</Text>
+        <Text style={[styles.itemTitle, isDark && { color: '#fff' }]} numberOfLines={2}>{item.service.title}</Text>
+        <Text style={[styles.itemProvider, isDark && { color: '#aaa' }]}>by {item.service.provider}</Text>
+        <Text style={[styles.itemQuantity, isDark && { color: '#aaa' }]}>Qty: {item.quantity}</Text>
       </View>
-      
-      <Text style={styles.itemPrice}>
+      <Text style={[styles.itemPrice, isDark && { color: '#60A5FA' }]}>
         ${(item.service.price * item.quantity).toFixed(2)}
       </Text>
     </View>
   );
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity
-          style={styles.backButton}
-          onPress={handleBack}
-          activeOpacity={0.7}
-        >
-          <ArrowLeft size={24} color="#1F2937" />
+    <SafeAreaView style={[styles.container, isDark && { backgroundColor: '#111827' }]}>
+      <View style={[styles.header, isDark && { backgroundColor: '#1F2937', borderBottomColor: '#374151' }]}>
+        <TouchableOpacity style={styles.backButton} onPress={handleBack} activeOpacity={0.7}>
+          <ArrowLeft size={24} color={isDark ? '#fff' : '#1F2937'} />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Checkout</Text>
+        <Text style={[styles.headerTitle, isDark && { color: '#fff' }]}>Checkout</Text>
         <View style={styles.placeholder} />
       </View>
 
       <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
         {/* Order Summary */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Order Summary</Text>
-          <View style={styles.card}>
+          <Text style={[styles.sectionTitle, isDark && { color: '#fff' }]}>Order Summary</Text>
+          <View style={[styles.card, isDark && { backgroundColor: '#1F2937' }]}> 
             {state.cart.map(renderOrderItem)}
           </View>
         </View>
 
         {/* Delivery Information */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Service Address</Text>
-          <View style={styles.card}>
+          <Text style={[styles.sectionTitle, isDark && { color: '#fff' }]}>Service Address</Text>
+          <View style={[styles.card, isDark && { backgroundColor: '#1F2937' }]}> 
             <View style={styles.infoRow}>
-              <View style={styles.infoIcon}>
+              <View style={[styles.infoIcon, isDark && { backgroundColor: '#374151' }]}> 
                 <MapPin size={20} color="#2563EB" />
               </View>
               <View style={styles.infoContent}>
-                <Text style={styles.infoTitle}>Service Location</Text>
-                <Text style={styles.infoText}>
+                <Text style={[styles.infoTitle, isDark && { color: '#fff' }]}>Service Location</Text>
+                <Text style={[styles.infoText, isDark && { color: '#aaa' }]}> 
                   {authState.user?.address || '123 Main Street, City, State 12345'}
                 </Text>
               </View>
@@ -114,17 +106,17 @@ export default function CheckoutScreen() {
 
         {/* Customer Information */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Customer Information</Text>
-          <View style={styles.card}>
+          <Text style={[styles.sectionTitle, isDark && { color: '#fff' }]}>Customer Information</Text>
+          <View style={[styles.card, isDark && { backgroundColor: '#1F2937' }]}> 
             <View style={styles.infoRow}>
-              <View style={styles.infoIcon}>
+              <View style={[styles.infoIcon, isDark && { backgroundColor: '#374151' }]}> 
                 <User size={20} color="#2563EB" />
               </View>
               <View style={styles.infoContent}>
-                <Text style={styles.infoTitle}>Contact Details</Text>
-                <Text style={styles.infoText}>{authState.user?.name}</Text>
-                <Text style={styles.infoText}>{authState.user?.email}</Text>
-                <Text style={styles.infoText}>{authState.user?.phone}</Text>
+                <Text style={[styles.infoTitle, isDark && { color: '#fff' }]}>Contact Details</Text>
+                <Text style={[styles.infoText, isDark && { color: '#aaa' }]}>{authState.user?.name}</Text>
+                <Text style={[styles.infoText, isDark && { color: '#aaa' }]}>{authState.user?.email}</Text>
+                <Text style={[styles.infoText, isDark && { color: '#aaa' }]}>{authState.user?.phone}</Text>
               </View>
             </View>
           </View>
@@ -132,15 +124,15 @@ export default function CheckoutScreen() {
 
         {/* Payment Method */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Payment Method</Text>
-          <View style={styles.card}>
+          <Text style={[styles.sectionTitle, isDark && { color: '#fff' }]}>Payment Method</Text>
+          <View style={[styles.card, isDark && { backgroundColor: '#1F2937' }]}> 
             <View style={styles.infoRow}>
-              <View style={styles.infoIcon}>
+              <View style={[styles.infoIcon, isDark && { backgroundColor: '#374151' }]}> 
                 <CreditCard size={20} color="#2563EB" />
               </View>
               <View style={styles.infoContent}>
-                <Text style={styles.infoTitle}>Cash on Service</Text>
-                <Text style={styles.infoText}>Pay when service is completed</Text>
+                <Text style={[styles.infoTitle, isDark && { color: '#fff' }]}>Cash on Service</Text>
+                <Text style={[styles.infoText, isDark && { color: '#aaa' }]}>Pay when service is completed</Text>
               </View>
               <CheckCircle size={24} color="#10B981" />
             </View>
@@ -149,36 +141,32 @@ export default function CheckoutScreen() {
 
         {/* Price Breakdown */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Price Details</Text>
-          <View style={styles.card}>
+          <Text style={[styles.sectionTitle, isDark && { color: '#fff' }]}>Price Details</Text>
+          <View style={[styles.card, isDark && { backgroundColor: '#1F2937' }]}> 
             <View style={styles.priceRow}>
-              <Text style={styles.priceLabel}>Subtotal ({itemCount} items)</Text>
-              <Text style={styles.priceValue}>${totalPrice.toFixed(2)}</Text>
+              <Text style={[styles.priceLabel, isDark && { color: '#aaa' }]}>Subtotal ({itemCount} items)</Text>
+              <Text style={[styles.priceValue, isDark && { color: '#fff' }]}>{`$${totalPrice.toFixed(2)}`}</Text>
             </View>
-            
             <View style={styles.priceRow}>
-              <Text style={styles.priceLabel}>Service Fee</Text>
-              <Text style={styles.priceValue}>${serviceFee.toFixed(2)}</Text>
+              <Text style={[styles.priceLabel, isDark && { color: '#aaa' }]}>Service Fee</Text>
+              <Text style={[styles.priceValue, isDark && { color: '#fff' }]}>{`$${serviceFee.toFixed(2)}`}</Text>
             </View>
-            
             <View style={styles.priceRow}>
-              <Text style={styles.priceLabel}>Tax (8%)</Text>
-              <Text style={styles.priceValue}>${tax.toFixed(2)}</Text>
+              <Text style={[styles.priceLabel, isDark && { color: '#aaa' }]}>Tax (8%)</Text>
+              <Text style={[styles.priceValue, isDark && { color: '#fff' }]}>{`$${tax.toFixed(2)}`}</Text>
             </View>
-            
             <View style={[styles.priceRow, styles.totalRow]}>
-              <Text style={styles.totalLabel}>Total Amount</Text>
-              <Text style={styles.totalValue}>${finalTotal.toFixed(2)}</Text>
+              <Text style={[styles.totalLabel, isDark && { color: '#fff' }]}>Total Amount</Text>
+              <Text style={[styles.totalValue, isDark && { color: '#60A5FA' }]}>{`$${finalTotal.toFixed(2)}`}</Text>
             </View>
           </View>
         </View>
       </ScrollView>
 
-      <View style={styles.footer}>
+      <View style={[styles.footer, isDark && { backgroundColor: '#1F2937', borderTopColor: '#374151' }]}> 
         <View style={styles.totalContainer}>
-          <Text style={styles.footerTotalLabel}>Total: ${finalTotal.toFixed(2)}</Text>
+          <Text style={[styles.footerTotalLabel, isDark && { color: '#fff' }]}>Total: ${finalTotal.toFixed(2)}</Text>
         </View>
-        
         <TouchableOpacity
           style={[styles.placeOrderButton, isProcessing && styles.placeOrderButtonDisabled]}
           onPress={handlePlaceOrder}
@@ -379,5 +367,5 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: 'Inter-SemiBold',
     color: '#FFFFFF',
-  },
+  }
 });

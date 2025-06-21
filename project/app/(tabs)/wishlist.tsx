@@ -10,12 +10,14 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { useApp } from '@/context/AppContext';
+import { useTheme } from '@/context/ThemeContext';
 import { Service } from '@/types';
 import { Heart, Star, Plus, Trash2 } from 'lucide-react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
 export default function WishlistScreen() {
   const { state, addToCart, removeFromWishlist } = useApp();
+  const { isDark } = useTheme();
   const router = useRouter();
 
   const handleServicePress = (serviceId: number) => {
@@ -32,28 +34,51 @@ export default function WishlistScreen() {
 
   const renderWishlistItem = ({ item }: { item: Service }) => (
     <TouchableOpacity
-      style={styles.itemContainer}
+      style={[
+        styles.itemContainer,
+        { backgroundColor: isDark ? '#1F2937' : '#FFFFFF' },
+      ]}
       onPress={() => handleServicePress(item.id)}
       activeOpacity={0.7}
     >
       <Image source={{ uri: item.image }} style={styles.itemImage} />
 
       <View style={styles.itemContent}>
-        <Text style={styles.itemTitle} numberOfLines={2}>
+        <Text
+          style={[styles.itemTitle, { color: isDark ? '#F9FAFB' : '#1F2937' }]}
+          numberOfLines={2}
+        >
           {item.title}
         </Text>
 
-        <Text style={styles.itemProvider} numberOfLines={1}>
+        <Text
+          style={[
+            styles.itemProvider,
+            { color: isDark ? '#9CA3AF' : '#6B7280' },
+          ]}
+          numberOfLines={1}
+        >
           by {item.provider}
         </Text>
 
         <View style={styles.itemDetails}>
           <View style={styles.ratingContainer}>
             <Star size={14} color="#F59E0B" fill="#F59E0B" />
-            <Text style={styles.rating}>{item.rating}</Text>
+            <Text
+              style={[styles.rating, { color: isDark ? '#FCD34D' : '#1F2937' }]}
+            >
+              {item.rating}
+            </Text>
           </View>
 
-          <Text style={styles.duration}>{item.duration}</Text>
+          <Text
+            style={[
+              styles.duration,
+              { color: isDark ? '#9CA3AF' : '#6B7280' },
+            ]}
+          >
+            {item.duration}
+          </Text>
         </View>
 
         <View style={styles.itemFooter}>
@@ -61,7 +86,12 @@ export default function WishlistScreen() {
 
           <View style={styles.actionButtons}>
             <TouchableOpacity
-              style={styles.removeButton}
+              style={[
+                styles.removeButton,
+                {
+                  backgroundColor: isDark ? '#7F1D1D' : '#FEF2F2',
+                },
+              ]}
               onPress={() => handleRemoveFromWishlist(item.id)}
               activeOpacity={0.7}
             >
@@ -84,9 +114,21 @@ export default function WishlistScreen() {
 
   const renderEmptyState = () => (
     <View style={styles.emptyState}>
-      <Heart size={64} color="#E5E7EB" />
-      <Text style={styles.emptyTitle}>Your wishlist is empty</Text>
-      <Text style={styles.emptySubtitle}>
+      <Heart size={64} color={isDark ? '#4B5563' : '#E5E7EB'} />
+      <Text
+        style={[
+          styles.emptyTitle,
+          { color: isDark ? '#F9FAFB' : '#1F2937' },
+        ]}
+      >
+        Your wishlist is empty
+      </Text>
+      <Text
+        style={[
+          styles.emptySubtitle,
+          { color: isDark ? '#9CA3AF' : '#6B7280' },
+        ]}
+      >
         Browse services and add them to your wishlist to save for later
       </Text>
       <TouchableOpacity
@@ -100,7 +142,12 @@ export default function WishlistScreen() {
   );
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView
+      style={[
+        styles.container,
+        { backgroundColor: isDark ? '#111827' : '#F9FAFB' },
+      ]}
+    >
       <LinearGradient
         colors={['#0f2027', '#203a43', '#2c5364']}
         style={styles.headerGradient}
@@ -112,8 +159,16 @@ export default function WishlistScreen() {
           </View>
         </View>
       </LinearGradient>
+
       {state.wishlist.length > 0 && (
-        <Text style={styles.itemCount}>{state.wishlist.length} items</Text>
+        <Text
+          style={[
+            styles.itemCount,
+            { color: isDark ? '#D1D5DB' : '#6B7280' },
+          ]}
+        >
+          {state.wishlist.length} items
+        </Text>
       )}
 
       <FlatList
@@ -132,20 +187,7 @@ export default function WishlistScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#F9FAFB',
-  },
-  // header: {
-  //   flexDirection: 'row',
-  //   justifyContent: 'space-between',
-  //   alignItems: 'center',
-  //   paddingHorizontal: 20,
-  //   paddingVertical: 16,
-  //   backgroundColor: '#FFFFFF',
-  //   borderBottomWidth: 1,
-  //   borderBottomColor: '#E5E7EB',
-  // },
+  container: { flex: 1 },
   headerGradient: {
     borderBottomLeftRadius: 24,
     borderBottomRightRadius: 24,
@@ -160,15 +202,11 @@ const styles = StyleSheet.create({
   },
   heyText: { fontSize: 18, color: '#fff', fontWeight: '600' },
   subText: { fontSize: 14, color: '#d1d5db', marginTop: 4 },
-  headerTitle: {
-    fontSize: 24,
-    fontFamily: 'Inter-Bold',
-    color: '#1F2937',
-  },
   itemCount: {
     fontSize: 16,
     fontFamily: 'Inter-Medium',
-    color: '#6B7280',
+    marginTop: 10,
+    paddingHorizontal: 20,
   },
   listContent: {
     padding: 20,
@@ -180,7 +218,6 @@ const styles = StyleSheet.create({
   },
   itemContainer: {
     flexDirection: 'row',
-    backgroundColor: '#FFFFFF',
     borderRadius: 16,
     marginBottom: 16,
     shadowColor: '#000000',
@@ -201,14 +238,12 @@ const styles = StyleSheet.create({
   itemTitle: {
     fontSize: 16,
     fontFamily: 'Inter-SemiBold',
-    color: '#1F2937',
     marginBottom: 4,
     lineHeight: 20,
   },
   itemProvider: {
     fontSize: 14,
     fontFamily: 'Inter-Regular',
-    color: '#6B7280',
     marginBottom: 8,
   },
   itemDetails: {
@@ -224,13 +259,11 @@ const styles = StyleSheet.create({
   rating: {
     fontSize: 14,
     fontFamily: 'Inter-Medium',
-    color: '#1F2937',
     marginLeft: 4,
   },
   duration: {
     fontSize: 14,
     fontFamily: 'Inter-Regular',
-    color: '#6B7280',
   },
   itemFooter: {
     flexDirection: 'row',
@@ -249,7 +282,6 @@ const styles = StyleSheet.create({
   removeButton: {
     width: 36,
     height: 36,
-    backgroundColor: '#FEF2F2',
     borderRadius: 18,
     justifyContent: 'center',
     alignItems: 'center',
@@ -276,14 +308,12 @@ const styles = StyleSheet.create({
   emptyTitle: {
     fontSize: 24,
     fontFamily: 'Inter-Bold',
-    color: '#1F2937',
     marginTop: 20,
     marginBottom: 8,
   },
   emptySubtitle: {
     fontSize: 16,
     fontFamily: 'Inter-Regular',
-    color: '#6B7280',
     textAlign: 'center',
     lineHeight: 24,
     marginBottom: 32,

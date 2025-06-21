@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -8,18 +8,32 @@ import {
   Image,
   Platform,
   KeyboardAvoidingView,
+  Switch,
 } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { useApp } from '@/context/AppContext';
-import { CartItem } from '@/types';
-import { ShoppingCart, Plus, Minus, Trash2 } from 'lucide-react-native';
+import { ShoppingCart, Plus, Minus, Trash2, Moon, Sun } from 'lucide-react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
 export default function CartScreen() {
   const { state, removeFromCart, updateCartQuantity, clearCart, getTotalPrice } = useApp();
   const router = useRouter();
   const insets = useSafeAreaInsets();
+  
+
+  const [isDark, setIsDark] = useState(false);
+
+  const colors = {
+    background: isDark ? '#0F172A' : '#F9FAFB',
+    card: isDark ? '#1E293B' : '#FFFFFF',
+    text: isDark ? '#F1F5F9' : '#1F2937',
+    subtext: isDark ? '#94A3B8' : '#6B7280',
+    border: isDark ? '#334155' : '#E5E7EB',
+    highlight: '#2563EB',
+    danger: '#EF4444',
+    shadowColor: '#000',
+  };
 
   const handleQuantityChange = (serviceId, change) => {
     const item = state.cart.find(item => item.service.id === serviceId);
@@ -38,31 +52,31 @@ export default function CartScreen() {
   };
 
   const renderCartItem = ({ item }) => (
-    <View style={styles.itemContainer}>
+    <View style={[styles.itemContainer, { backgroundColor: colors.card, shadowColor: colors.shadowColor }]}> 
       <Image source={{ uri: item.service.image }} style={styles.itemImage} />
       <View style={styles.itemContent}>
-        <Text style={styles.itemTitle} numberOfLines={2}>{item.service.title}</Text>
-        <Text style={styles.itemProvider} numberOfLines={1}>by {item.service.provider}</Text>
-        <Text style={styles.itemDuration}>{item.service.duration}</Text>
+        <Text style={[styles.itemTitle, { color: colors.text }]} numberOfLines={2}>{item.service.title}</Text>
+        <Text style={[styles.itemProvider, { color: colors.subtext }]} numberOfLines={1}>by {item.service.provider}</Text>
+        <Text style={[styles.itemDuration, { color: colors.subtext }]}>{item.service.duration}</Text>
         <View style={styles.itemFooter}>
-          <Text style={styles.itemPrice}>${item.service.price}</Text>
+          <Text style={[styles.itemPrice, { color: colors.highlight }]}>${item.service.price}</Text>
           <View style={styles.quantityContainer}>
             <TouchableOpacity
               style={styles.quantityButton}
               onPress={() => handleQuantityChange(item.service.id, -1)}>
-              <Minus size={16} color="#6B7280" />
+              <Minus size={16} color={colors.subtext} />
             </TouchableOpacity>
-            <Text style={styles.quantity}>{item.quantity}</Text>
+            <Text style={[styles.quantity, { color: colors.text }]}>{item.quantity}</Text>
             <TouchableOpacity
               style={styles.quantityButton}
               onPress={() => handleQuantityChange(item.service.id, 1)}>
-              <Plus size={16} color="#6B7280" />
+              <Plus size={16} color={colors.subtext} />
             </TouchableOpacity>
           </View>
           <TouchableOpacity
             style={styles.removeButton}
             onPress={() => handleRemoveItem(item.service.id)}>
-            <Trash2 size={18} color="#EF4444" />
+            <Trash2 size={18} color={colors.danger} />
           </TouchableOpacity>
         </View>
       </View>
@@ -71,11 +85,11 @@ export default function CartScreen() {
 
   const renderEmptyState = () => (
     <View style={styles.emptyState}>
-      <ShoppingCart size={64} color="#E5E7EB" />
-      <Text style={styles.emptyTitle}>Your cart is empty</Text>
-      <Text style={styles.emptySubtitle}>Add services to your cart to get started</Text>
+      <ShoppingCart size={64} color={colors.border} />
+      <Text style={[styles.emptyTitle, { color: colors.text }]}>Your cart is empty</Text>
+      <Text style={[styles.emptySubtitle, { color: colors.subtext }]}>Add services to your cart to get started</Text>
       <TouchableOpacity
-        style={styles.browseButton}
+        style={[styles.browseButton, { backgroundColor: colors.highlight }]}
         onPress={() => router.push('/(tabs)')}>
         <Text style={styles.browseButtonText}>Browse Services</Text>
       </TouchableOpacity>
@@ -86,11 +100,21 @@ export default function CartScreen() {
   const itemCount = state.cart.reduce((count, item) => count + item.quantity, 0);
 
   return (
-    <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
-      
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
       <LinearGradient colors={['#0f2027', '#203a43', '#2c5364']} style={styles.headerGradient}>
         <View style={styles.headerTop}>
-          <Text style={styles.heyText}>Cart</Text>
+          <View style={styles.headerRow}>
+            <Text style={styles.heyText}>Cart</Text>
+            <View style={styles.toggleContainer}>
+              <Moon size={18} color="#fff" />
+              <Switch
+                value={isDark}
+                onValueChange={setIsDark}
+                thumbColor={isDark ? '#60A5FA' : '#f4f3f4'}
+              />
+              <Sun size={18} color="#fff" />
+            </View>
+          </View>
           <Text style={styles.subText}>Manage Your Orders Here</Text>
         </View>
       </LinearGradient>
@@ -99,7 +123,7 @@ export default function CartScreen() {
         <TouchableOpacity
           style={styles.clearButton}
           onPress={clearCart}>
-          <Text style={styles.clearButtonText}>Clear All</Text>
+          <Text style={[styles.clearButtonText, { color: colors.danger }]}>Clear All</Text>
         </TouchableOpacity>
       )}
 
@@ -121,13 +145,13 @@ export default function CartScreen() {
 
         {state.cart.length > 0 && (
           <View style={[styles.footerOverlay, { bottom: insets.bottom + 16 }]}>
-            <View style={styles.footerCard}>
+            <View style={[styles.footerCard, { backgroundColor: colors.card, shadowColor: colors.shadowColor }]}>
               <View style={styles.totalContainer}>
-                <Text style={styles.totalLabel}>{itemCount} items</Text>
-                <Text style={styles.totalPrice}>${totalPrice.toFixed(2)}</Text>
+                <Text style={[styles.totalLabel, { color: colors.subtext }]}>{itemCount} items</Text>
+                <Text style={[styles.totalPrice, { color: colors.text }]}>${totalPrice.toFixed(2)}</Text>
               </View>
               <TouchableOpacity
-                style={styles.checkoutButton}
+                style={[styles.checkoutButton, { backgroundColor: colors.highlight }]}
                 onPress={handleCheckout}>
                 <Text style={styles.checkoutButtonText}>Proceed to Checkout</Text>
               </TouchableOpacity>
@@ -140,10 +164,7 @@ export default function CartScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#F9FAFB',
-  },
+  container: { flex: 1 },
   headerGradient: {
     borderBottomLeftRadius: 24,
     borderBottomRightRadius: 24,
@@ -153,15 +174,25 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingTop: 24,
   },
+  headerRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
   heyText: {
     fontSize: 20,
     color: '#fff',
-    fontWeight: '700'
+    fontWeight: '700',
   },
   subText: {
     fontSize: 14,
     color: '#d1d5db',
     marginTop: 4,
+  },
+  toggleContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
   },
   clearButton: {
     paddingHorizontal: 16,
@@ -169,7 +200,6 @@ const styles = StyleSheet.create({
   },
   clearButtonText: {
     fontSize: 16,
-    color: '#EF4444',
     fontWeight: '500',
   },
   listContent: {
@@ -182,11 +212,9 @@ const styles = StyleSheet.create({
   },
   itemContainer: {
     flexDirection: 'row',
-    backgroundColor: '#FFFFFF',
     borderRadius: 16,
     marginBottom: 16,
     elevation: 3,
-    shadowColor: '#000',
     shadowOpacity: 0.1,
     shadowRadius: 6,
     shadowOffset: { width: 0, height: 2 },
@@ -204,16 +232,13 @@ const styles = StyleSheet.create({
   itemTitle: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#1F2937',
     marginBottom: 4,
   },
   itemProvider: {
     fontSize: 14,
-    color: '#6B7280',
   },
   itemDuration: {
     fontSize: 13,
-    color: '#9CA3AF',
     marginBottom: 12,
   },
   itemFooter: {
@@ -224,14 +249,13 @@ const styles = StyleSheet.create({
   itemPrice: {
     fontSize: 16,
     fontWeight: '700',
-    color: '#2563EB',
   },
   quantityContainer: {
     flexDirection: 'row',
     backgroundColor: '#F3F4F6',
     borderRadius: 20,
     paddingHorizontal: 4,
-    alignItems: 'center'
+    alignItems: 'center',
   },
   quantityButton: {
     width: 30,
@@ -241,9 +265,8 @@ const styles = StyleSheet.create({
   },
   quantity: {
     fontSize: 16,
-    color: '#1F2937',
     marginHorizontal: 8,
-    textAlign: 'center'
+    textAlign: 'center',
   },
   removeButton: {
     width: 36,
@@ -260,17 +283,14 @@ const styles = StyleSheet.create({
   emptyTitle: {
     fontSize: 24,
     fontWeight: '700',
-    color: '#1F2937',
     marginVertical: 8,
   },
   emptySubtitle: {
     fontSize: 16,
-    color: '#6B7280',
     textAlign: 'center',
     marginBottom: 20,
   },
   browseButton: {
-    backgroundColor: '#2563EB',
     borderRadius: 12,
     paddingHorizontal: 24,
     paddingVertical: 12,
@@ -284,17 +304,14 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: 16,
     right: 16,
-    paddingBottom:25,
+    paddingBottom: 25,
   },
   footerCard: {
-    backgroundColor: '#FFFFFF',
     borderRadius: 20,
     padding: 16,
-    shadowColor: '#000',
     shadowOpacity: 0.1,
     shadowRadius: 8,
     elevation: 6,
-    
   },
   totalContainer: {
     flexDirection: 'row',
@@ -303,15 +320,12 @@ const styles = StyleSheet.create({
   },
   totalLabel: {
     fontSize: 16,
-    color: '#6B7280',
   },
   totalPrice: {
     fontSize: 20,
     fontWeight: '700',
-    color: '#111827',
   },
   checkoutButton: {
-    backgroundColor: '#2563EB',
     borderRadius: 12,
     paddingVertical: 14,
     alignItems: 'center',

@@ -6,13 +6,15 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useAuth } from '@/context/AuthContext';
 import {
   Edit3, Camera, LogOut, Calendar, Settings, Bookmark, Star, MapPin,
-  Phone, User, Gift
+  User, Gift, Moon, Sun
 } from 'lucide-react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useTheme } from '@/context/ThemeContext';
 
 export default function ProfileScreen() {
   const { state, logout, updateProfile } = useAuth();
+  const { isDark, toggleTheme } = useTheme();
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
     name: state.user?.name || '',
@@ -57,10 +59,14 @@ export default function ProfileScreen() {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
+  const backgroundColor = isDark ? '#111827' : '#F9FAFB';
+  const cardColor = isDark ? '#1F2937' : '#FFFFFF';
+  const textColor = isDark ? '#F9FAFB' : '#111827';
+  const subTextColor = isDark ? '#9CA3AF' : '#6B7280';
+
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, { backgroundColor }]}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
-        {/* Custom Gradient Header */}
         <View style={styles.header}>
           <LinearGradient
             colors={['#0f2027', '#203a43', '#2c5364']}
@@ -68,21 +74,21 @@ export default function ProfileScreen() {
           >
             <View style={styles.headerTop}>
               <View>
-                <Text style={styles.heyText}>
-                  Profile
-                </Text>
-                <Text style={styles.subText}>
-                  View and edit your account details
-                </Text>
+                <Text style={styles.heyText}>Profile</Text>
+                <Text style={styles.subText}>View and edit your account details</Text>
               </View>
-              <TouchableOpacity onPress={handleEditToggle}>
-                <Edit3 size={20} color="#fff" />
-              </TouchableOpacity>
+              <View style={{ flexDirection: 'row', gap: 16 }}>
+                <TouchableOpacity onPress={toggleTheme}>
+                  {isDark ? <Sun size={20} color="#FBBF24" /> : <Moon size={20} color="#fff" />}
+                </TouchableOpacity>
+                <TouchableOpacity onPress={handleEditToggle}>
+                  <Edit3 size={20} color="#fff" />
+                </TouchableOpacity>
+              </View>
             </View>
           </LinearGradient>
         </View>
 
-        {/* Image */}
         <View style={styles.imageContainer}>
           <Image
             source={{
@@ -95,24 +101,22 @@ export default function ProfileScreen() {
           </TouchableOpacity>
         </View>
 
-        {/* User Info */}
         <View style={styles.userInfoBox}>
-          <Text style={styles.userName}>{formData.name || 'Verified Customer'}</Text>
-          <Text style={styles.userPhone}>{formData.phone || '+91 7854962134'}</Text>
+          <Text style={[styles.userName, { color: textColor }]}>{formData.name || 'Verified Customer'}</Text>
+          <Text style={[styles.userPhone, { color: subTextColor }]}>{formData.phone || '+91 7854962134'}</Text>
         </View>
 
-        {/* Editable Form */}
         {isEditing && (
           <View style={styles.editForm}>
             <TextInput
-              style={styles.input}
+              style={[styles.input, { backgroundColor: cardColor, color: textColor }]}
               placeholder="Full Name"
               value={formData.name}
               onChangeText={(val) => updateFormData('name', val)}
               placeholderTextColor="#9CA3AF"
             />
             <TextInput
-              style={styles.input}
+              style={[styles.input, { backgroundColor: cardColor, color: textColor }]}
               placeholder="Phone Number"
               value={formData.phone}
               keyboardType="phone-pad"
@@ -120,7 +124,7 @@ export default function ProfileScreen() {
               placeholderTextColor="#9CA3AF"
             />
             <TextInput
-              style={[styles.input, { height: 80 }]}
+              style={[styles.input, { height: 80, backgroundColor: cardColor, color: textColor }]}
               placeholder="Address"
               multiline
               numberOfLines={3}
@@ -131,41 +135,37 @@ export default function ProfileScreen() {
           </View>
         )}
 
-        {/* Top Action Boxes */}
         <View style={styles.rowBoxContainer}>
-          <TouchableOpacity style={styles.rowBox}>
+          <TouchableOpacity style={[styles.rowBox, { backgroundColor: cardColor }]}>
             <Calendar size={22} color="#2563EB" />
-            <Text style={styles.rowBoxText}>My bookings</Text>
+            <Text style={[styles.rowBoxText, { color: textColor }]}>My bookings</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.rowBox}>
+          <TouchableOpacity style={[styles.rowBox, { backgroundColor: cardColor }]}>
             <Bookmark size={22} color="#2563EB" />
-            <Text style={styles.rowBoxText}>Native devices</Text>
+            <Text style={[styles.rowBoxText, { color: textColor }]}>Native devices</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.rowBox}>
+          <TouchableOpacity style={[styles.rowBox, { backgroundColor: cardColor }]}>
             <Settings size={22} color="#2563EB" />
-            <Text style={styles.rowBoxText}>Help & support</Text>
+            <Text style={[styles.rowBoxText, { color: textColor }]}>Help & support</Text>
           </TouchableOpacity>
         </View>
 
-        {/* Other Options */}
-        <View style={styles.optionList}>
-          <OptionRow icon={Star} label="My Plans" />
-          <OptionRow icon={Gift} label="Wallet" />
-          <OptionRow icon={User} label="Plus membership" />
-          <OptionRow icon={Star} label="My Rating" />
-          <OptionRow icon={MapPin} label="Manage addresses" />
-          <OptionRow icon={Gift} label="Manage payment methods" />
-          <OptionRow icon={Settings} label="Settings" />
-          <OptionRow icon={Bookmark} label="About UC" />
+        <View style={[styles.optionList, { backgroundColor: cardColor }]}>
+          <OptionRow icon={Star} label="My Plans" textColor={textColor} />
+          <OptionRow icon={Gift} label="Wallet" textColor={textColor} />
+          <OptionRow icon={User} label="Plus membership" textColor={textColor} />
+          <OptionRow icon={Star} label="My Rating" textColor={textColor} />
+          <OptionRow icon={MapPin} label="Manage addresses" textColor={textColor} />
+          <OptionRow icon={Gift} label="Manage payment methods" textColor={textColor} />
+          <OptionRow icon={Settings} label="Settings" textColor={textColor} />
+          <OptionRow icon={Bookmark} label="About UC" textColor={textColor} />
         </View>
 
-        {/* Refer & Earn */}
         <View style={styles.referCard}>
           <Gift size={24} color="#2563EB" />
           <Text style={styles.referText}>Refer and Earn Rewards</Text>
         </View>
 
-        {/* Logout */}
         <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
           <LogOut size={20} color="#EF4444" />
           <Text style={styles.logoutText}>Logout</Text>
@@ -175,19 +175,25 @@ export default function ProfileScreen() {
   );
 }
 
-const OptionRow = ({ icon: Icon, label }: { icon: any; label: string }) => (
+const OptionRow = ({
+  icon: Icon,
+  label,
+  textColor,
+}: {
+  icon: any;
+  label: string;
+  textColor: string;
+}) => (
   <TouchableOpacity style={styles.optionRow}>
     <Icon size={20} color="#2563EB" />
-    <Text style={styles.optionText}>{label}</Text>
+    <Text style={[styles.optionText, { color: textColor }]}>{label}</Text>
   </TouchableOpacity>
 );
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#F9FAFB' },
+  container: { flex: 1 },
   scrollContent: { paddingBottom: 40 },
-  header: {
-    // Empty, headerGradient handles rounded corners and color
-  },
+  header: {},
   headerGradient: {
     borderBottomLeftRadius: 24,
     borderBottomRightRadius: 24,
@@ -225,18 +231,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 10,
   },
-  userName: { fontSize: 20, fontWeight: 'bold', color: '#111827' },
-  userPhone: { fontSize: 14, color: '#6B7280', marginTop: 2 },
+  userName: { fontSize: 20, fontWeight: 'bold' },
+  userPhone: { fontSize: 14, marginTop: 2 },
   editForm: { paddingHorizontal: 20 },
   input: {
-    backgroundColor: '#FFFFFF',
     borderRadius: 10,
     borderWidth: 1,
     borderColor: '#E5E7EB',
     padding: 12,
     fontSize: 16,
     marginBottom: 12,
-    color: '#1F2937',
   },
   rowBoxContainer: {
     flexDirection: 'row',
@@ -245,7 +249,6 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   rowBox: {
-    backgroundColor: '#FFFFFF',
     paddingVertical: 16,
     paddingHorizontal: 12,
     borderRadius: 12,
@@ -254,9 +257,8 @@ const styles = StyleSheet.create({
     elevation: 2,
     shadowColor: '#00000020',
   },
-  rowBoxText: { fontSize: 12, color: '#1F2937', marginTop: 6, textAlign: 'center' },
+  rowBoxText: { fontSize: 12, marginTop: 6, textAlign: 'center' },
   optionList: {
-    backgroundColor: '#FFFFFF',
     marginVertical: 8,
     paddingHorizontal: 20,
     paddingVertical: 10,
@@ -268,7 +270,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#F3F4F6',
   },
-  optionText: { marginLeft: 12, fontSize: 16, color: '#374151' },
+  optionText: { marginLeft: 12, fontSize: 16 },
   referCard: {
     margin: 20,
     backgroundColor: '#E0F2FE',

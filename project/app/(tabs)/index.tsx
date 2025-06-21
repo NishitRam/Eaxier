@@ -14,6 +14,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useApp } from '@/context/AppContext';
 import { useAuth } from '@/context/AuthContext';
 import { useNotifications } from '@/context/NotificationContext';
+import { useTheme } from '@/context/ThemeContext';
 import { ServiceCard } from '@/components/ServiceCard';
 import { SearchBar } from '@/components/SearchBar';
 import { Bell, BellOff, Sparkles, TrendingUp, Clock, Star } from 'lucide-react-native';
@@ -24,6 +25,7 @@ export default function HomeScreen() {
   const { state, dispatch } = useApp();
   const { state: authState } = useAuth();
   const { state: notificationState, requestPermission, toggleNotifications } = useNotifications();
+  const { isDark } = useTheme();
   const [refreshing, setRefreshing] = useState(false);
 
   const services = useMemo(() => {
@@ -67,13 +69,13 @@ export default function HomeScreen() {
   ];
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, { backgroundColor: isDark ? '#111827' : '#F8FAFC' }]}>
       {/* Header */}
       <LinearGradient colors={['#0f2027', '#203a43', '#2c5364']} style={styles.headerGradient}>
         <View style={styles.headerTop}>
           <View>
-            <Text style={styles.heyText}>Hey, {authState.user?.name || 'User'}</Text>
-            <Text style={styles.addressText}>Chandaka Industrial Estate - Infocity</Text>
+            <Text style={[styles.heyText, { color: '#fff' }]}>Hey, {authState.user?.name || 'User'}</Text>
+            <Text style={[styles.addressText, { color: '#d1d5db' }]}>Chandaka Industrial Estate - Infocity</Text>
           </View>
           <TouchableOpacity style={styles.notificationButton} onPress={handleNotificationPress}>
             {notificationState.isEnabled ? (
@@ -86,12 +88,12 @@ export default function HomeScreen() {
         </View>
       </LinearGradient>
 
-      {/* Scrollable Content */}
+      
       <ScrollView
         showsVerticalScrollIndicator={false}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
       >
-        {/* Search Bar below header */}
+     
         <View style={{ paddingHorizontal: 20, marginTop: 16 }}>
           <SearchBar
             value={state.searchQuery}
@@ -100,12 +102,12 @@ export default function HomeScreen() {
           />
         </View>
 
-        {/* Grid Icons */}
+        
         <View style={styles.gridContainer}>
           {gridItems.map((item, index) => (
             <View key={index} style={styles.gridItem}>
               <Image source={{ uri: item.icon }} style={styles.gridIcon} />
-              <Text style={styles.gridLabel}>{item.label}</Text>
+              <Text style={[styles.gridLabel, { color: isDark ? '#D1D5DB' : '#374151' }]}>{item.label}</Text>
             </View>
           ))}
         </View>
@@ -129,15 +131,15 @@ export default function HomeScreen() {
           </LinearGradient>
         </View>
 
-        {/* Featured */}
+        
         <View style={styles.featuredSection}>
           <View style={styles.sectionHeader}>
             <View style={styles.sectionTitleContainer}>
               <Sparkles size={20} color="#667eea" />
-              <Text style={styles.sectionTitle}>Featured Services</Text>
+              <Text style={[styles.sectionTitle, { color: isDark ? '#E5E7EB' : '#1F2937' }]}>Featured Services</Text>
             </View>
             <TouchableOpacity>
-              <Text style={styles.viewAllText}>View All</Text>
+              <Text style={[styles.viewAllText, { color: '#667eea' }]}>View All</Text>
             </TouchableOpacity>
           </View>
           <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: 20 }}>
@@ -149,9 +151,8 @@ export default function HomeScreen() {
           </ScrollView>
         </View>
 
-        {/* All Services */}
         <View style={{ paddingHorizontal: 20, paddingBottom: 80 }}>
-          <Text style={styles.sectionTitle}>All Services</Text>
+          <Text style={[styles.sectionTitle, { color: isDark ? '#E5E7EB' : '#1F2937' }]}>All Services</Text>
           {services.map((s) => (
             <ServiceCard key={s.id} service={s} />
           ))}
@@ -162,7 +163,7 @@ export default function HomeScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#F8FAFC' },
+  container: { flex: 1 },
   headerGradient: {
     borderBottomLeftRadius: 24,
     borderBottomRightRadius: 24,
@@ -175,8 +176,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingTop: 16,
   },
-  heyText: { fontSize: 18, color: '#fff', fontWeight: '600' },
-  addressText: { fontSize: 14, color: '#d1d5db', marginTop: 4 },
+  heyText: { fontSize: 18, fontWeight: '600' },
+  addressText: { fontSize: 14, marginTop: 4 },
   notificationButton: {
     backgroundColor: 'rgba(255,255,255,0.2)',
     padding: 10,
@@ -200,7 +201,7 @@ const styles = StyleSheet.create({
   },
   gridItem: { width: '30%', alignItems: 'center', marginBottom: 20 },
   gridIcon: { width: 50, height: 50, marginBottom: 6 },
-  gridLabel: { textAlign: 'center', fontSize: 12, color: '#374151' },
+  gridLabel: { textAlign: 'center', fontSize: 12 },
   statsSection: {
     flexDirection: 'row',
     paddingHorizontal: 20,
@@ -224,12 +225,6 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   sectionTitleContainer: { flexDirection: 'row', alignItems: 'center' },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#1F2937',
-    marginLeft: 8,
-    marginBottom: 4,
-  },
-  viewAllText: { fontSize: 14, color: '#667eea' },
+  sectionTitle: { fontSize: 18, fontWeight: 'bold' },
+  viewAllText: { fontSize: 14 },
 });

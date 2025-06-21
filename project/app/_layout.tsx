@@ -7,6 +7,7 @@ import { useFrameworkReady } from '@/hooks/useFrameworkReady';
 import { AuthProvider } from '@/context/AuthContext';
 import { AppProvider } from '@/context/AppContext';
 import { NotificationProvider } from '@/context/NotificationContext';
+import { ThemeProvider } from '@/context/ThemeContext';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -31,6 +32,7 @@ export default function RootLayout() {
   }
 
   return (
+    <ThemeProvider>
     <NotificationProvider>
       <AuthProvider>
         <AppProvider>
@@ -46,5 +48,6 @@ export default function RootLayout() {
         </AppProvider>
       </AuthProvider>
     </NotificationProvider>
+    </ThemeProvider>
   );
 }

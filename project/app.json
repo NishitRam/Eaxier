@@ -8,36 +8,31 @@
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
-
     "splash": {
       "image": "./assets/images/Logo.jpg",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-
     "ios": {
       "supportsTablet": true
     },
-
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/Logo.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.nishit_63.Eaxier"
     },
-
     "web": {
       "favicon": "./assets/images/Logo.png",
       "bundler": "metro",
       "output": "single"
     },
-
     "plugins": [
       "expo-router",
       "expo-font",
       "expo-web-browser"
     ],
-
     "experiments": {
       "typedRoutes": true
     }

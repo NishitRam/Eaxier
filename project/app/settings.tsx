@@ -22,17 +22,17 @@ export default function SettingsScreen() {
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor }]}>
-      {/* Header */}
+      
       <View style={[styles.header, { backgroundColor: cardColor }]}>
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
           <ArrowLeft size={22} color={textColor} />
         </TouchableOpacity>
         <Text style={[styles.headerTitle, { color: textColor }]}>Settings</Text>
-        <View style={{ width: 30 }} /> {/* Spacer */}
+        <View style={{ width: 30 }} />
       </View>
 
       <ScrollView contentContainerStyle={{ padding: 16 }}>
-        {/* Toggle Options */}
+        
         <View style={[styles.optionRow, { backgroundColor: cardColor }]}>
           <Text style={[styles.optionLabel, { color: textColor }]}>Dark Mode</Text>
           <Switch value={isDark} onValueChange={toggleTheme} />
@@ -43,7 +43,7 @@ export default function SettingsScreen() {
           <Switch value={true} />
         </View>
 
-        {/* Static Options */}
+        
         <View style={[styles.optionRow, { backgroundColor: cardColor }]}>
           <Text style={[styles.optionLabel, { color: textColor }]}>Language</Text>
           <Text style={[styles.optionValue, { color: subTextColor }]}>English</Text>

@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  View,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet,
-  useColorScheme,
-} from 'react-native';
+import { View, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Search, Filter, Mic } from 'lucide-react-native';
 
@@ -16,38 +10,23 @@ interface SearchBarProps {
 }
 
 export const SearchBar: React.FC<SearchBarProps> = ({ value, onChangeText, onFilterPress }) => {
-  const colorScheme = useColorScheme();
-  const isDark = colorScheme === 'dark';
-
-  const colors = {
-    background: isDark ? '#0F172A' : '#F8FAFC',
-    searchBg: isDark ? '#1E293B' : '#FFFFFF',
-    text: isDark ? '#F1F5F9' : '#1F2937',
-    placeholder: isDark ? '#9CA3AF' : '#9CA3AF',
-    icon: isDark ? '#E5E7EB' : '#333333',
-  };
-
   return (
-    <View style={[styles.container, { backgroundColor: colors.background }]}>
-      <View style={[styles.searchContainer, { backgroundColor: colors.searchBg }]}>
-        <Search size={20} color={colors.placeholder} style={styles.searchIcon} />
+    <View style={styles.container}>
+      <View style={styles.searchContainer}>
+        <Search size={20} color="#9CA3AF" style={styles.searchIcon} />
         <TextInput
-          style={[styles.input, { color: colors.text }]}
+          style={styles.input}
           placeholder="Find here"
-          placeholderTextColor={colors.placeholder}
+          placeholderTextColor="#9CA3AF"
           value={value}
           onChangeText={onChangeText}
         />
         <TouchableOpacity style={styles.micButton} activeOpacity={0.7}>
-          <Mic size={18} color={colors.icon} />
+          <Mic size={18} color="#333333" />
         </TouchableOpacity>
       </View>
-
-      <TouchableOpacity
-        style={styles.filterButtonContainer}
-        onPress={onFilterPress}
-        activeOpacity={0.8}
-      >
+      
+      <TouchableOpacity style={styles.filterButtonContainer} onPress={onFilterPress} activeOpacity={0.8}>
         <LinearGradient
           colors={['#0f2027', '#203a43', '#2c5364']}
           style={styles.filterButton}
@@ -64,15 +43,17 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     paddingHorizontal: 20,
     paddingVertical: 16,
+    backgroundColor: '#F8FAFC',
     gap: 12,
   },
   searchContainer: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
+    backgroundColor: '#FFFFFF',
     borderRadius: 16,
     paddingHorizontal: 16,
-    shadowColor: '#000',
+    shadowColor: '#000000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.08,
     shadowRadius: 12,
@@ -86,6 +67,7 @@ const styles = StyleSheet.create({
     height: 48,
     fontSize: 16,
     fontFamily: 'Inter-Regular',
+    color: '#1F2937',
   },
   micButton: {
     padding: 8,
@@ -105,4 +87,4 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-});
+}); 

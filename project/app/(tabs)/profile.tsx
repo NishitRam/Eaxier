@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useRouter } from 'expo-router';
 import {
   View, Text, StyleSheet, TouchableOpacity, TextInput, Image, ScrollView, Alert
 } from 'react-native';
@@ -15,6 +16,7 @@ import { useTheme } from '@/context/ThemeContext';
 export default function ProfileScreen() {
   const { state, logout, updateProfile } = useAuth();
   const { isDark, toggleTheme } = useTheme();
+  const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
     name: state.user?.name || '',
@@ -136,18 +138,18 @@ export default function ProfileScreen() {
         )}
 
         <View style={styles.rowBoxContainer}>
-          <TouchableOpacity style={[styles.rowBox, { backgroundColor: cardColor }]}>
-            <Calendar size={22} color="#2563EB" />
-            <Text style={[styles.rowBoxText, { color: textColor }]}>My bookings</Text>
-          </TouchableOpacity>
+          <TouchableOpacity style={[styles.rowBox, { backgroundColor: cardColor }]} onPress={() => router.push('/bookings')}>
+  <Calendar size={22} color="#2563EB" />
+  <Text style={[styles.rowBoxText, { color: textColor }]}>My bookings</Text>
+</TouchableOpacity>
           <TouchableOpacity style={[styles.rowBox, { backgroundColor: cardColor }]}>
             <Bookmark size={22} color="#2563EB" />
             <Text style={[styles.rowBoxText, { color: textColor }]}>Native devices</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[styles.rowBox, { backgroundColor: cardColor }]}>
-            <Settings size={22} color="#2563EB" />
-            <Text style={[styles.rowBoxText, { color: textColor }]}>Help & support</Text>
-          </TouchableOpacity>
+         <TouchableOpacity style={[styles.rowBox, { backgroundColor: cardColor }]} onPress={() => router.push('/settings')}>
+  <Settings size={22} color="#2563EB" />
+  <Text style={[styles.rowBoxText, { color: textColor }]}>Settings</Text>
+</TouchableOpacity>
         </View>
 
         <View style={[styles.optionList, { backgroundColor: cardColor }]}>

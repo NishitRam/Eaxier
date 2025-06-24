@@ -37,23 +37,25 @@ A sleek, modular **React Native app** built using **Expo** for booking home serv
 
 ## 📸 Screenshots
 
-📁 All screenshots are inside `/screenshots/`
+📁 All screenshots are inside `./screenshots/`
 
 ---
 
 ### 🚀 Splash Screen
 
+### 🟣 Splash
+
 | Splash |
 |--------|
-| ![]/screenshots/splash.png) |
+| ![Splash](./screenshots/splash.png) |
 
 ---
 
 ### 🔐 Signup Flow
 
-| Signup | Validation | Proper Format | Password Check | Signup Success |
-|--------|------------|----------------|----------------|----------------|
-| ![]/screenshots/signup.jpg) | ![]/screenshots/signupform-validation.jpg) | ![]/screenshots/signuppassword-check.jpg) | ![]/screenshots/signuppassword-check.jpg) | ![]/screenshots/login.jpg) |
+| Signup | Validation | Password Check | Signup Success |
+|--------|------------|----------------|----------------|
+| ![Signup](./screenshots/signup.jpg) | ![Validation](./screenshots/signupform-validation.jpg) | ![Password](./screenshots/signuppassword-check.jpg) | ![Success](./screenshots/login.jpg) |
 
 ---
 
@@ -61,7 +63,7 @@ A sleek, modular **React Native app** built using **Expo** for booking home serv
 
 | Login Validation | Login |
 |------------------|--------|
-| ![]/screenshots/login.jpg) | ![]/screenshots/login.jpg) |
+| ![Login](./screenshots/login.jpg) | ![Login](./screenshots/login.jpg) |
 
 ---
 
@@ -69,15 +71,15 @@ A sleek, modular **React Native app** built using **Expo** for booking home serv
 
 | Home | Featured Services | All Services 1 | All Services 2 |
 |------|-------------------|----------------|----------------|
-| ![]/screenshots/home.jpg) | ![]/screenshots/featured-services.jpg) | ![]/screenshots/allservices-1.jpg) | ![]/screenshots/allservices-2.jpg) |
+| ![Home](./screenshots/home.jpg) | ![Featured](./screenshots/featured-services.jpg) | ![All1](./screenshots/allservices-1.jpg) | ![All2](./screenshots/allservices-2.jpg) |
 
 | All Services 3 | All Services 4 | Notifications Enabled |
 |----------------|----------------|------------------------|
-| ![]/screenshots/allservices-3.jpg) | ![]/screenshots/allservices-1 4.jpg) | ![]/screenshots/enable-notifications.jpg) |
+| ![All3](./screenshots/allservices-3.jpg) | ![All4](./screenshots/allservices-1%204.jpg) | ![Notify](./screenshots/enable-notifications.jpg) |
 
 | Home Dark | Services Dark |
 |-----------|----------------|
-| ![]/screenshots/home-dark.jpg) | ![]/screenshots/services-dark.jpg) |
+| ![DarkHome](./screenshots/home-dark.jpg) | ![DarkServices](./screenshots/services-dark.jpg) |
 
 ---
 
@@ -85,11 +87,11 @@ A sleek, modular **React Native app** built using **Expo** for booking home serv
 
 | Explore More | Explore Dark |
 |--------------|--------------|
-| ![]/screenshots/explore-more.jpg) | ![]/screenshots/explore-dark.jpg) |
+| ![Explore](./screenshots/explore-more.jpg) | ![DarkExplore](./screenshots/explore-dark.jpg) |
 
 | Explore Chess | Chess Game | Tic Tac Toe |
 |---------------|------------|-------------|
-| ![]/screenshots/explore-chess.jpg) | ![]/screenshots/chess.jpg) | ![]/screenshots/tic-tac-toe.jpg) |
+| ![ChessTab](./screenshots/explore-chess.jpg) | ![Chess](./screenshots/chess.jpg) | ![TicTacToe](./screenshots/tic-tac-toe.jpg) |
 
 ---
 
@@ -97,7 +99,7 @@ A sleek, modular **React Native app** built using **Expo** for booking home serv
 
 | Wishlist (Dark) | Add to Cart | Add Quantity |
 |-----------------|-------------|--------------|
-| ![]/screenshots/wishlist-dark.jpg) | ![]/screenshots/add-to-cart.jpg) | ![]/screenshots/add-quantity.jpg) |
+| ![Wishlist](./screenshots/wishlist-dark.jpg) | ![AddToCart](./screenshots/add-to-cart.jpg) | ![Quantity](./screenshots/add-quantity.jpg) |
 
 ---
 
@@ -105,7 +107,7 @@ A sleek, modular **React Native app** built using **Expo** for booking home serv
 
 | Cart | Checkout | Checkout Details |
 |------|----------|------------------|
-| ![]/screenshots/cart.jpg) | ![]/screenshots/checkout.jpg) | ![]/screenshots/checkout-details.jpg) |
+| ![Cart](./screenshots/cart.jpg) | ![Checkout](./screenshots/checkout.jpg) | ![Details](./screenshots/checkout-details.jpg) |
 
 ---
 
@@ -113,7 +115,7 @@ A sleek, modular **React Native app** built using **Expo** for booking home serv
 
 | Order Placed |
 |--------------|
-| ![]/screenshots/order-placed.jpg) |
+| ![Placed](./screenshots/order-placed.jpg) |
 
 ---
 
@@ -121,7 +123,7 @@ A sleek, modular **React Native app** built using **Expo** for booking home serv
 
 | Bookings | Done/Cancel/Track |
 |----------|--------------------|
-| ![]/screenshots/bookings.jpg) | ![]/screenshots/done-cancel-track.jpg) |
+| ![Bookings](./screenshots/bookings.jpg) | ![Track](./screenshots/done-cancel-track.jpg) |
 
 ---
 
@@ -129,7 +131,7 @@ A sleek, modular **React Native app** built using **Expo** for booking home serv
 
 | Profile | All Profile Options |
 |---------|----------------------|
-| ![]/screenshots/profile.jpg) | ![]/screenshots/all-profile-options.jpg) |
+| ![Profile](./screenshots/profile.jpg) | ![AllOptions](./screenshots/all-profile-options.jpg) |
 
 ---
 
@@ -137,7 +139,7 @@ A sleek, modular **React Native app** built using **Expo** for booking home serv
 
 | Settings | Settings Dark |
 |----------|---------------|
-| ![]/screenshots/settings.jpg) | ![]/screenshots/settings-dark.jpg) |
+| ![Settings](./screenshots/settings.jpg) | ![SettingsDark](./screenshots/settings-dark.jpg) |
 
 ---
 
@@ -145,7 +147,7 @@ A sleek, modular **React Native app** built using **Expo** for booking home serv
 
 | Choose Pic | Crop | Updated Pic |
 |------------|------|--------------|
-| ![]/screenshots/choose-pic.jpg) | ![]/screenshots/crop-works.jpg) | ![]/screenshots/updated-pic.jpg) |
+| ![Choose](./screenshots/choose-pic.jpg) | ![Crop](./screenshots/crop-works.jpg) | ![Updated](./screenshots/updated-pic.jpg) |
 
 ---
 
@@ -153,7 +155,10 @@ A sleek, modular **React Native app** built using **Expo** for booking home serv
 
 | Logout |
 |--------|
-| ![]/screenshots/logout.jpg) |
+| ![Logout](./screenshots/logout.jpg) |
+
+---
+
 
 
 ---

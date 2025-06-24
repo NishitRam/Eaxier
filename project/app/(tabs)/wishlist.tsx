@@ -21,7 +21,7 @@ export default function WishlistScreen() {
   const router = useRouter();
 
   const handleServicePress = (serviceId: number) => {
-    router.push(`/service/₹{serviceId}`);
+    router.push(`/service/${serviceId}`);
   };
 
   const handleAddToCart = (service: Service) => {

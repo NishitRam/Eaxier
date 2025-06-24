@@ -39,7 +39,7 @@ export default function CheckoutScreen() {
     await new Promise(resolve => setTimeout(resolve, 2000));
     Alert.alert(
       'Order Placed Successfully!',
-      `Your order for ₹{itemCount} service₹{itemCount > 1 ? 's' : ''} has been confirmed. Total amount:₹₹{finalTotal.toFixed(2)}`,
+      `Your order for ${itemCount} service${itemCount > 1 ? 's' : ''} has been confirmed. Total amount:₹${finalTotal.toFixed(2)}`,
       [
         {
           text: 'OK',
@@ -145,19 +145,19 @@ export default function CheckoutScreen() {
           <View style={[styles.card, isDark && { backgroundColor: '#1F2937' }]}> 
             <View style={styles.priceRow}>
               <Text style={[styles.priceLabel, isDark && { color: '#aaa' }]}>Subtotal ({itemCount} items)</Text>
-              <Text style={[styles.priceValue, isDark && { color: '#fff' }]}>{`₹₹{totalPrice.toFixed(2)}`}</Text>
+              <Text style={[styles.priceValue, isDark && { color: '#fff' }]}>{`₹${totalPrice.toFixed(2)}`}</Text>
             </View>
             <View style={styles.priceRow}>
               <Text style={[styles.priceLabel, isDark && { color: '#aaa' }]}>Service Fee</Text>
-              <Text style={[styles.priceValue, isDark && { color: '#fff' }]}>{`₹₹{serviceFee.toFixed(2)}`}</Text>
+              <Text style={[styles.priceValue, isDark && { color: '#fff' }]}>{`₹${serviceFee.toFixed(2)}`}</Text>
             </View>
             <View style={styles.priceRow}>
               <Text style={[styles.priceLabel, isDark && { color: '#aaa' }]}>Tax (8%)</Text>
-              <Text style={[styles.priceValue, isDark && { color: '#fff' }]}>{`₹₹{tax.toFixed(2)}`}</Text>
+              <Text style={[styles.priceValue, isDark && { color: '#fff' }]}>{`₹${tax.toFixed(2)}`}</Text>
             </View>
             <View style={[styles.priceRow, styles.totalRow]}>
               <Text style={[styles.totalLabel, isDark && { color: '#fff' }]}>Total Amount</Text>
-              <Text style={[styles.totalValue, isDark && { color: '#60A5FA' }]}>{`₹₹{finalTotal.toFixed(2)}`}</Text>
+              <Text style={[styles.totalValue, isDark && { color: '#60A5FA' }]}>{`₹${finalTotal.toFixed(2)}`}</Text>
             </View>
           </View>
         </View>

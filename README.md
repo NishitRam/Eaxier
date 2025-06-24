@@ -11,8 +11,7 @@ Welcome to the **Eaxier** project! This repository contains a full-featured Reac
 
 ## 📄 Project Overview
 
-The main application source code is inside the [`project/`](./project) folder.  
-Screenshots used in the documentation are stored in the [`screenshots/`](./screenshots) folder.
+The main application source code is inside the [`project/`](./project) folder.
 
 You can view the full app features, setup, and screenshots inside [`project/README.md`](./project/README.md).
 

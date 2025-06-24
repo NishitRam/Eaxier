@@ -47,7 +47,7 @@ A sleek, modular **React Native app** built using **Expo** for booking home serv
 
 | Splash |
 |--------|
-| ![Splash](./screenshots/splash.png) |
+| ![Splash](./screenshots/splash.jpg) |
 
 ---
 
@@ -55,7 +55,7 @@ A sleek, modular **React Native app** built using **Expo** for booking home serv
 
 | Signup | Validation | Password Check | Signup Success |
 |--------|------------|----------------|----------------|
-| ![Signup](./screenshots/signup.jpg) | ![Validation](./screenshots/signupform-validation.jpg) | ![Password](./screenshots/signuppassword-check.jpg) | ![Success](./screenshots/login.jpg) |
+| ![Signup](./screenshots/signup.jpg) | ![Validation](./screenshots/signupform-validation.jpg) | ![Password](./screenshots/signuppassword-check.jpg)
 
 ---
 
@@ -63,7 +63,7 @@ A sleek, modular **React Native app** built using **Expo** for booking home serv
 
 | Login Validation | Login |
 |------------------|--------|
-| ![Login](./screenshots/login.jpg) | ![Login](./screenshots/login.jpg) |
+| ![Login](./screenshots/login.jpg) | 
 
 ---
 
@@ -75,7 +75,7 @@ A sleek, modular **React Native app** built using **Expo** for booking home serv
 
 | All Services 3 | All Services 4 | Notifications Enabled |
 |----------------|----------------|------------------------|
-| ![All3](./screenshots/allservices-3.jpg) | ![All4](./screenshots/allservices-1%204.jpg) | ![Notify](./screenshots/enable-notifications.jpg) |
+| ![All3](./screenshots/allservices-3.jpg) | ![All4](./screenshots/allservices-4.jpg) | ![Notify](./screenshots/enable-notifications.jpg) |
 
 | Home Dark | Services Dark |
 |-----------|----------------|

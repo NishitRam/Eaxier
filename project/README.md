@@ -159,10 +159,9 @@ A sleek, modular **React Native app** built using **Expo** for booking home serv
 
 ---
 
-## 🎥 Demo Video
+##### 🎥 Demo Video
 
-<video src="./screenshots/demo.mp4" width="100%" controls></video>
-
+▶️ [Click to watch the demo](./screenshots/demo.mp4)
 
 
 ---

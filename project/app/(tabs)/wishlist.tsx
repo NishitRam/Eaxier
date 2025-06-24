@@ -21,7 +21,7 @@ export default function WishlistScreen() {
   const router = useRouter();
 
   const handleServicePress = (serviceId: number) => {
-    router.push(`/service/${serviceId}`);
+    router.push(`/service/₹{serviceId}`);
   };
 
   const handleAddToCart = (service: Service) => {
@@ -82,7 +82,7 @@ export default function WishlistScreen() {
         </View>
 
         <View style={styles.itemFooter}>
-          <Text style={styles.price}>${item.price}</Text>
+          <Text style={styles.price}>₹{item.price}</Text>
 
           <View style={styles.actionButtons}>
             <TouchableOpacity

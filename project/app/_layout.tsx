@@ -33,21 +33,20 @@ export default function RootLayout() {
 
   return (
     <ThemeProvider>
-    <NotificationProvider>
-      <AuthProvider>
-        <AppProvider>
-          <Stack screenOptions={{ headerShown: false }}>
-           
-            <Stack.Screen name="index" />
-            <Stack.Screen name="auth" />
-            <Stack.Screen name="(tabs)" />
-            <Stack.Screen name="service/[id]" />
-            <Stack.Screen name="checkout" />
-          </Stack>
-          <StatusBar style="auto" />
-        </AppProvider>
-      </AuthProvider>
-    </NotificationProvider>
+      <NotificationProvider>
+        <AuthProvider>
+          <AppProvider>
+            <Stack screenOptions={{ headerShown: false }}>
+              <Stack.Screen name="index" />
+              <Stack.Screen name="auth" />
+              <Stack.Screen name="(tabs)" />
+              <Stack.Screen name="service/[id]" />
+              <Stack.Screen name="checkout" />
+            </Stack>
+            <StatusBar style="auto" />
+          </AppProvider>
+        </AuthProvider>
+      </NotificationProvider>
     </ThemeProvider>
   );
 }

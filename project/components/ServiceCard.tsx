@@ -18,13 +18,9 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({ service, featured = fa
   const { addToCart, addToWishlist, removeFromWishlist, isInWishlist } = useApp();
   const isWishlisted = isInWishlist(service.id);
 
-  // const handlePress = () => {
-  //   router.push(/service/${service.id});
-  // };
   const handlePress = () => {
-  router.push(`/service/${service.id}`);
-};
-
+    router.push(`/service/${service.id}`);
+  };
 
   const handleWishlistToggle = () => {
     if (isWishlisted) {

@@ -104,7 +104,7 @@ export default function ServiceDetailScreen() {
               <Text style={styles.statText}>{service.duration}</Text>
             </View>
             
-            <Text style={styles.price}>${service.price}</Text>
+            <Text style={styles.price}>₹{service.price}</Text>
           </View>
 
           <View style={styles.section}>
@@ -153,7 +153,7 @@ export default function ServiceDetailScreen() {
       <View style={styles.footer}>
         <View style={styles.totalContainer}>
           <Text style={styles.totalLabel}>Total</Text>
-          <Text style={styles.totalPrice}>${(service.price * selectedQuantity).toFixed(2)}</Text>
+          <Text style={styles.totalPrice}>₹{(service.price * selectedQuantity).toFixed(2)}</Text>
         </View>
         
         <TouchableOpacity

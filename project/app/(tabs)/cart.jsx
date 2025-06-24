@@ -59,7 +59,7 @@ export default function CartScreen() {
         <Text style={[styles.itemProvider, { color: colors.subtext }]} numberOfLines={1}>by {item.service.provider}</Text>
         <Text style={[styles.itemDuration, { color: colors.subtext }]}>{item.service.duration}</Text>
         <View style={styles.itemFooter}>
-          <Text style={[styles.itemPrice, { color: colors.highlight }]}>${item.service.price}</Text>
+          <Text style={[styles.itemPrice, { color: colors.highlight }]}>₹{item.service.price}</Text>
           <View style={styles.quantityContainer}>
             <TouchableOpacity
               style={styles.quantityButton}
@@ -148,7 +148,7 @@ export default function CartScreen() {
             <View style={[styles.footerCard, { backgroundColor: colors.card, shadowColor: colors.shadowColor }]}>
               <View style={styles.totalContainer}>
                 <Text style={[styles.totalLabel, { color: colors.subtext }]}>{itemCount} items</Text>
-                <Text style={[styles.totalPrice, { color: colors.text }]}>${totalPrice.toFixed(2)}</Text>
+                <Text style={[styles.totalPrice, { color: colors.text }]}>₹{totalPrice.toFixed(2)}</Text>
               </View>
               <TouchableOpacity
                 style={[styles.checkoutButton, { backgroundColor: colors.highlight }]}

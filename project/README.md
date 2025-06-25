@@ -151,6 +151,9 @@ A sleek, modular **React Native app** built using **Expo** for booking home serv
 
 ---
 
+| Chatbot |
+| ![Choose](./screenshots/chat.jpg) |
+
 ### 🔓 Logout
 
 | Logout |

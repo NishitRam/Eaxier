@@ -8,6 +8,7 @@ import { AuthProvider } from '@/context/AuthContext';
 import { AppProvider } from '@/context/AppContext';
 import { NotificationProvider } from '@/context/NotificationContext';
 import { ThemeProvider } from '@/context/ThemeContext';
+import TawkScript from '@/components/TawkScript'; 
 
 SplashScreen.preventAutoHideAsync();
 
@@ -36,6 +37,7 @@ export default function RootLayout() {
       <NotificationProvider>
         <AuthProvider>
           <AppProvider>
+            <TawkScript /> 
             <Stack screenOptions={{ headerShown: false }}>
               <Stack.Screen name="index" />
               <Stack.Screen name="auth" />
